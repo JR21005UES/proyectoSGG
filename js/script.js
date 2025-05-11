@@ -172,8 +172,8 @@ function manejarActivacionRaster() {
         if (temperatura.checked) {
             map.addLayer(layers.temperatura.layer);
         } else if (vegetacion.checked) {
-            map.addLayer(layers.vegetacion.layer);
-        } else if (suelos.checked) {
+                map.addLayer(layers.vegetacion.layer);
+            } else if (suelos.checked) {
             map.addLayer(layers.suelos.layer);
         }
 
