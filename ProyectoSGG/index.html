@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Mapa Interactivo DEGURBA</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+
+<body>
+  <!-- Menú lateral estilo QGIS -->
+  <div id="topbar">
+    <!-- Logo -->
+    <div id="logo-container">
+      <img src="https://es.m.wikipedia.org/wiki/Archivo:Escudo_de_la_Universidad_de_El_Salvador.svg" alt="Logo UES"
+        id="logo-ues">
+    </div>
+    <div id="titulo">
+      <h2>SIG</h2>
+    </div>
+    <div id="subtitulo">
+      <h2>Capas Vectoriales</h2>
+    </div>
+
+
+    <!-- DEGURBA -->
+    <div class="layer-group">
+      <label><input type="checkbox" id="toggleDeburga" checked> DEGURBA</label>
+      <select id="deburgaSelect">
+        <option value="">-- Mostrar Todas --</option>
+        <option value="Ciudades">Ciudades</option>
+        <option value="Zonas rurales">Zonas rurales</option>
+        <option value="Zonas rurales dispersas">Zonas rurales dispersas</option>
+        <option value="Zonas suburbanas o periurbanas">Zonas suburbanas o periurbanas</option>
+      </select>
+    </div>
+
+    <!-- MUNICIPIOS -->
+    <div class="layer-group">
+      <label><input type="checkbox" id="toggleMunicipios" checked> Municipios</label>
+      <select id="municipioSelect">
+        <option value="">-- Mostrar Todos --</option>
+        <option value="Ahuachapán">Ahuachapán</option>
+        <option value="Santa Ana">Santa Ana</option>
+        <option value="La Libertad">La Libertad</option>
+        <option value="San Salvador">San Salvador</option>
+        <option value="Usulután">Usulután</option>
+        <option value="San Miguel">San Miguel</option>
+      </select>
+    </div>
+
+    <!-- CARRETERAS -->
+    <div class="layer-group">
+      <label><input type="checkbox" id="toggleCarreteras" checked> Carreteras</label>
+    </div>
+
+    <!-- Rios -->
+    <div class="layer-group">
+      <label><input type="checkbox" id="toggleRios" checked> Ríos y vías de agua</label>
+    </div>
+    <div id="subtitulo">
+      <h2>Capas Ráster</h2>
+    </div>
+    <!-- Temperatura -->
+    <div class="layer-group">
+      <label><input type="checkbox" id="toggleTemperatura" checked> Temperatura</label>
+    </div>
+
+    <!-- Vegetacion -->
+    <div class="layer-group">
+      <label><input type="checkbox" id="toggleVegetacion" checked> Vegetacion</label>
+    </div>
+
+    <!-- Superficie -->
+    <div class="layer-group">
+      <label><input type="checkbox" id="toggleSuperficie" checked> Superficie</label>
+    </div>
+
+    <!-- Suelos -->
+    <div class="layer-group">
+      <label><input type="checkbox" id="toggleSuelos" checked> Suelos</label>
+    </div>
+  </div>
+
+  <div id="map-container">
+    <div id="map"></div>
+  </div>
+  <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
+  <script src="js/script.js"></script>
+</body>
+
+</html>
