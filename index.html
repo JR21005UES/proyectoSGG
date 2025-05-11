@@ -13,163 +13,205 @@
 
   <div id="topbar" class="w-60 bg-[#2c3e50] text-white p-5 rounded-lg flex flex-col h-[calc(100vh-2.5rem)]">
     <div id="logo-container" class="flex justify-center mb-3">
-      <img src="https://www.ues.edu.sv/wp-content/uploads/sites/20/2024/08/light-header-v2.png"
-           alt="Logo UES" id="logo-ues" class="w-full h-auto max-h-16 object-contain">
+      <img src="https://www.ues.edu.sv/wp-content/uploads/sites/20/2024/08/light-header-v2.png" alt="Logo UES"
+        id="logo-ues" class="w-full h-auto max-h-16 object-contain">
     </div>
-
     <div id="titulo" class="mb-3 text-center">
-      <h2 class="text-xl font-bold">Capas</h2>
+      <h2 class="text-xl font-bold">SIG</h2>
     </div>
-
     <div class="flex-grow overflow-y-auto space-y-1 pr-1 custom-scrollbar">
-      
       <div id="subtitulo-vectorial">
-        <h2 class="text-base font-semibold mb-1 text-gray-200 sticky top-0 bg-[#2c3e50] py-1 z-10">Capas Vectoriales</h2>
+        <h2 class="text-base font-semibold mb-1 text-gray-200 sticky top-0 bg-[#2c3e50] py-1 z-10">Capas Visibles</h2>
       </div>
 
       <div class="layer-group">
         <label class="flex items-center font-semibold text-sm cursor-pointer hover:bg-gray-700/50 p-1 rounded">
-          <input type="checkbox" id="toggleRios" class="form-checkbox mr-2 text-blue-500 bg-gray-700 border-gray-600 rounded focus:ring-blue-500">
-          Ríos y vías de agua
+          <input type="checkbox" id="toggleCarreteras"
+            class="form-checkbox mr-2 text-blue-500 bg-gray-700 border-gray-600 rounded focus:ring-blue-500"> Carreteras
         </label>
       </div>
       <div class="layer-group">
         <label class="flex items-center font-semibold text-sm cursor-pointer hover:bg-gray-700/50 p-1 rounded">
-          <input type="checkbox" id="toggleCarreteras" class="form-checkbox mr-2 text-blue-500 bg-gray-700 border-gray-600 rounded focus:ring-blue-500">
-          Carreteras
+          <input type="checkbox" id="toggleRios"
+            class="form-checkbox mr-2 text-blue-500 bg-gray-700 border-gray-600 rounded focus:ring-blue-500"> Ríos y
+          vías de agua
         </label>
       </div>
+
       <div class="layer-group">
         <label class="flex items-center font-semibold text-sm cursor-pointer hover:bg-gray-700/50 p-1 rounded">
-          <input type="checkbox" id="toggleConstrucciones" class="form-checkbox mr-2 text-blue-500 bg-gray-700 border-gray-600 rounded focus:ring-blue-500">
+          <input type="checkbox" id="toggleConstrucciones"
+            class="form-checkbox mr-2 text-blue-500 bg-gray-700 border-gray-600 rounded focus:ring-blue-500">
           Construcciones
         </label>
       </div>
       <div class="layer-group">
         <label class="flex items-center font-semibold text-sm cursor-pointer hover:bg-gray-700/50 p-1 rounded">
-          <input type="checkbox" id="toggleCuerpos" class="form-checkbox mr-2 text-blue-500 bg-gray-700 border-gray-600 rounded focus:ring-blue-500">
-          Cuerpos de agua
+          <input type="checkbox" id="toggleDeburga"
+            class="form-checkbox mr-2 text-blue-500 bg-gray-700 border-gray-600 rounded focus:ring-blue-500"> DEGURBA
         </label>
       </div>
-
       <div class="layer-group">
         <label class="flex items-center font-semibold text-sm cursor-pointer hover:bg-gray-700/50 p-1 rounded">
-          <input type="checkbox" id="toggleDeburga" class="form-checkbox mr-2 text-blue-500 bg-gray-700 border-gray-600 rounded focus:ring-blue-500">
-          DEGURBA
+          <input type="checkbox" id="toggleCuerpos"
+            class="form-checkbox mr-2 text-blue-500 bg-gray-700 border-gray-600 rounded focus:ring-blue-500"> Cuerpos de
+          agua
         </label>
-        <select id="deburgaSelect" class="ml-[22px] mt-1 w-[calc(100%-22px)] bg-[#f8fbfe] border border-gray-400 p-1 rounded text-xs text-gray-800 focus:ring-blue-500 focus:border-blue-500">
-          <option value="">-- Mostrar Todas --</option>
-          <option value="Ciudades">Ciudades</option>
-          <option value="Zonas rurales">Zonas rurales</option>
-          <option value="Zonas rurales dispersas">Zonas rurales dispersas</option>
-          <option value="Zonas suburbanas o periurbanas">Zonas suburbanas o periurbanas</option>
-        </select>
       </div>
-
       <div class="layer-group">
         <label class="flex items-center font-semibold text-sm cursor-pointer hover:bg-gray-700/50 p-1 rounded">
-          <input type="checkbox" id="toggleDistrito" class="form-checkbox mr-2 text-blue-500 bg-gray-700 border-gray-600 rounded focus:ring-blue-500">
-          Distritos
+          <input type="checkbox" id="toggleDistrito"
+            class="form-checkbox mr-2 text-blue-500 bg-gray-700 border-gray-600 rounded focus:ring-blue-500"> Distritos
         </label>
-        <select id="distritoSelect" class="ml-[22px] mt-1 w-[calc(100%-22px)] bg-[#f8fbfe] border border-gray-400 p-1 rounded text-xs text-gray-800 focus:ring-blue-500 focus:border-blue-500">
-          <option value="">-- Mostrar Todos --</option>
-          <option value="Aguilares">Aguilares</option>
-          <option value="Ahuachapán">Ahuachapán</option>
-          {/* */}
-        </select>
       </div>
-
       <div class="layer-group">
         <label class="flex items-center font-semibold text-sm cursor-pointer hover:bg-gray-700/50 p-1 rounded">
-          <input type="checkbox" id="toggleMunicipios" class="form-checkbox mr-2 text-blue-500 bg-gray-700 border-gray-600 rounded focus:ring-blue-500">
-          Municipios
+          <input type="checkbox" id="toggleMunicipios"
+            class="form-checkbox mr-2 text-blue-500 bg-gray-700 border-gray-600 rounded focus:ring-blue-500"> Municipios
         </label>
-        <select id="municipioSelect" class="ml-[22px] mt-1 w-[calc(100%-22px)] bg-[#f8fbfe] border border-gray-400 p-1 rounded text-xs text-gray-800 focus:ring-blue-500 focus:border-blue-500">
-          <option value="">-- Mostrar Todos --</option>
-          <option value="Usulután Este">Usulután Este</option>
-          {/* */}
-        </select>
       </div>
-
       <div class="layer-group">
         <label class="flex items-center font-semibold text-sm cursor-pointer hover:bg-gray-700/50 p-1 rounded">
-          <input type="checkbox" id="toggleDepartamento" class="form-checkbox mr-2 text-blue-500 bg-gray-700 border-gray-600 rounded focus:ring-blue-500">
+          <input type="checkbox" id="toggleDepartamento"
+            class="form-checkbox mr-2 text-blue-500 bg-gray-700 border-gray-600 rounded focus:ring-blue-500">
           Departamentos
         </label>
-        <select id="departamentoSelect" class="ml-[22px] mt-1 w-[calc(100%-22px)] bg-[#f8fbfe] border border-gray-400 p-1 rounded text-xs text-gray-800 focus:ring-blue-500 focus:border-blue-500">
-          <option value="">-- Mostrar Todos --</option>
-          <option value="Ahuachapán">Ahuachapán</option>
-          {/* */}
-        </select>
       </div>
+      <hr class="my-2 border-gray-600">
 
       <div id="subtitulo-raster" class="mt-2">
         <h2 class="text-base font-semibold mb-1 text-gray-200 sticky top-0 bg-[#2c3e50] py-1 z-10">Capas Ráster</h2>
       </div>
       <div class="layer-group">
         <label class="flex items-center font-semibold text-sm cursor-pointer hover:bg-gray-700/50 p-1 rounded">
-          <input type="checkbox" id="toggleTemperatura" class="form-checkbox mr-2 text-blue-500 bg-gray-700 border-gray-600 rounded focus:ring-blue-500">
-          Temperatura
+          <input type="checkbox" id="toggleTemperatura"
+            class="form-checkbox mr-2 text-blue-500 bg-gray-700 border-gray-600 rounded focus:ring-blue-500">
+          Temperatura (LST)
         </label>
       </div>
       <div class="layer-group">
         <label class="flex items-center font-semibold text-sm cursor-pointer hover:bg-gray-700/50 p-1 rounded">
-          <input type="checkbox" id="toggleVegetacion" class="form-checkbox mr-2 text-blue-500 bg-gray-700 border-gray-600 rounded focus:ring-blue-500">
-          Vegetación
+          <input type="checkbox" id="toggleVegetacion"
+            class="form-checkbox mr-2 text-blue-500 bg-gray-700 border-gray-600 rounded focus:ring-blue-500"> Vegetación
+          (NDVI)
         </label>
       </div>
       <div class="layer-group">
         <label class="flex items-center font-semibold text-sm cursor-pointer hover:bg-gray-700/50 p-1 rounded">
-          <input type="checkbox" id="toggleSuelos" class="form-checkbox mr-2 text-blue-500 bg-gray-700 border-gray-600 rounded focus:ring-blue-500">
-          Suelos
+          <input type="checkbox" id="toggleSuelos"
+            class="form-checkbox mr-2 text-blue-500 bg-gray-700 border-gray-600 rounded focus:ring-blue-500"> Uso de
+          Suelo
         </label>
       </div>
       <div class="layer-group">
         <label class="flex items-center font-semibold text-sm cursor-pointer hover:bg-gray-700/50 p-1 rounded">
-          <input type="checkbox" id="toggleSuperficie" class="form-checkbox mr-2 text-blue-500 bg-gray-700 border-gray-600 rounded focus:ring-blue-500">
-          Superficie
+          <input type="checkbox" id="toggleSuperficie"
+            class="form-checkbox mr-2 text-blue-500 bg-gray-700 border-gray-600 rounded focus:ring-blue-500"> Superficie
         </label>
       </div>
     </div>
   </div>
 
-  <div id="legend-panel" class="absolute top-5 right-5 w-[200px] bg-[#2c3e50] text-white p-4 m-4 rounded-lg shadow-md z-[1001]"> 
-    <h2 class="text-lg font-semibold mb-2 pb-1.5 border-b border-white/40">Leyenda</h2>
-    <div id="legend-content" class="space-y-4 custom-scrollbar overflow-y-auto max-h-[calc(100vh-10rem)]"> 
+  <div class="flex-1 ml-5 relative">
+    <div id="map-container"
+      class="w-full h-full border-2 border-gray-300 rounded-lg overflow-hidden shadow-md bg-white">
+      <div id="map" class="w-full h-full"></div>
+    </div>
 
+    <div id="filter-bar"
+      class="absolute top-3 left-3 right-[205px] bg-[#2c3e50] text-white p-3 rounded-lg flex flex-wrap items-center space-x-2 space-y-2 sm:space-y-0 z-[1002]">
+      <div class="flex flex-col">
+        <label for="departamentoSelectGlobal" class="text-xs font-semibold text-gray-200 mb-0.5">Departamento:</label>
+        <select id="departamentoSelectGlobal"
+          class="form-select p-1.5 border border-gray-400 rounded-md shadow-sm text-xs text-gray-800 bg-white focus:ring-blue-500 focus:border-blue-500 min-w-[150px]">
+          <option value="">-- Seleccione --</option>
+          <option value="Ahuachapán">Ahuachapán</option>
+          <option value="Santa Ana">Santa Ana</option>
+          <option value="La Libertad">La Libertad</option>
+          <option value="San Salvador">San Salvador</option>
+          <option value="Usulután">Usulután</option>
+          <option value="San Miguel">San Miguel</option>
+        </select>
+      </div>
+      <div class="flex flex-col">
+        <label for="municipioSelectGlobal" class="text-xs font-semibold text-gray-200 mb-0.5">Municipio:</label>
+        <select id="municipioSelectGlobal" disabled
+          class="form-select p-1.5 border border-gray-400 rounded-md shadow-sm text-xs text-gray-800 bg-gray-100 cursor-not-allowed focus:ring-blue-500 focus:border-blue-500 min-w-[150px]">
+          <option value="">-- Seleccione --</option>
+        </select>
+      </div>
+      <div class="flex flex-col">
+        <label for="distritoSelectGlobal" class="text-xs font-semibold text-gray-200 mb-0.5">Distrito:</label>
+        <select id="distritoSelectGlobal" disabled
+          class="form-select p-1.5 border border-gray-400 rounded-md shadow-sm text-xs text-gray-800 bg-gray-100 cursor-not-allowed focus:ring-blue-500 focus:border-blue-500 min-w-[150px]">
+          <option value="">-- Seleccione --</option>
+        </select>
+      </div>
+      <div class="flex flex-col">
+        <label for="deburgaSelectGlobal" class="text-xs font-semibold text-gray-200 mb-0.5">DEGURBA:</label>
+        <select id="deburgaSelectGlobal"
+          class="form-select p-1.5 border border-gray-400 rounded-md shadow-sm text-xs text-gray-800 bg-white focus:ring-blue-500 focus:border-blue-500 min-w-[150px]">
+          <option value="">-- Todas --</option>
+          <option value="Ciudades">Ciudades</option>
+          <option value="Zonas rurales">Zonas rurales</option>
+          <option value="Zonas rurales dispersas">Zonas rurales dispersas</option>
+          <option value="Zonas suburbanas o periurbanas">Zonas suburbanas o periurbanas</option>
+        </select>
+      </div>
+      <button id="resetFiltersButton"
+        class="self-end p-1.5 bg-red-500 text-white rounded-md hover:bg-red-600 text-xs">Limpiar</button>
+    </div>
+
+    <div id="legend-panel"
+      class="absolute top-3 right-3 w-[180px] bg-[#2c3e50] text-white p-3 rounded-lg shadow-md z-[1001]">
+      <h2 class="text-base font-semibold mb-1.5 pb-1 border-b border-white/40">Leyenda</h2>
+      <div id="legend-content" class="space-y-3 custom-scrollbar overflow-y-auto max-h-[calc(100vh-12rem)]">
+      </div>
     </div>
   </div>
-  <div id="map-container" class="flex-1 ml-5 border-2 border-gray-300 rounded-lg overflow-hidden shadow-md bg-white flex">
-    <div id="map" class="w-full h-full"></div>
-  </div>
-
-  
 
   <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
   <script src="js/script.js"></script>
   <style>
-    /* Estilos para una barra de scroll más delgada y oscura, compatible con Webkit (Chrome, Safari, Edge) */
     .custom-scrollbar::-webkit-scrollbar {
-      width: 6px; /* Ancho de la barra de scroll */
-    }
-    .custom-scrollbar::-webkit-scrollbar-track {
-      background: #2c3e50; /* Color del track, igual al fondo del panel */
-      border-radius: 3px;
-    }
-    .custom-scrollbar::-webkit-scrollbar-thumb {
-      background-color: #5b7a9d; /* Color del thumb (la parte que se mueve) */
-      border-radius: 3px;
-      border: 1px solid #2c3e50; /* Borde opcional para el thumb */
-    }
-    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-      background-color: #7492b3; /* Color del thumb al pasar el mouse */
+      width: 6px;
     }
 
-    /* Para Firefox (más limitado, pero algo se puede hacer) */
+    .custom-scrollbar::-webkit-scrollbar-track {
+      background: #2c3e50;
+      border-radius: 3px;
+    }
+
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background-color: #5b7a9d;
+      border-radius: 3px;
+      border: 1px solid #2c3e50;
+    }
+
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+      background-color: #7492b3;
+    }
+
     .custom-scrollbar {
-      scrollbar-width: thin; /* "auto" o "thin" */
-      scrollbar-color: #5b7a9d #2c3e50; /* thumb track */
+      scrollbar-width: thin;
+      scrollbar-color: #5b7a9d #2c3e50;
+    }
+
+    #filter-bar select {
+      /* Estilos para selectores en la barra de filtros oscura */
+      background-color: white;
+      color: #374151;
+      border-color: #9ca3af;
+    }
+
+    #filter-bar select:disabled {
+      background-color: #4b5563;
+      color: #d1d5db;
+      opacity: 0.7;
+      cursor: not-allowed;
+      border-color: #6b7280;
     }
   </style>
 </body>
+
 </html>
