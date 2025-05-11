@@ -12,7 +12,7 @@ const workspace = 'SGG';
 
 const layers = {
     temperatura: {
-        name: `${workspace}:temperatura`,
+        name: `${workspace}:temperaturagi`,
         layer: null,
         toggleId: 'toggleTemperatura'
     },
