@@ -82,7 +82,6 @@ const layers = {
 // --- Leyenda dinámica ---
 const legendContent = document.getElementById('legend-content');
 
-// Mapea los checkboxes con la capa WMS para leyenda
 const legendMap = {
     toggleDeburga: 'SGG:deburga',
     toggleRios: 'SGG:rios',
@@ -91,40 +90,67 @@ const legendMap = {
     toggleSuelos: 'SGG:suelos'
 };
 
-// Actualiza leyendas activas
 function updateLegend() {
-    legendContent.innerHTML = ''; // Limpia actual
+    if (!legendContent) {
+        console.error("Elemento #legend-content no encontrado.");
+        return;
+    }
+    legendContent.innerHTML = ''; 
+    console.log('Actualizando leyenda. Capas en legendMap:', legendMap);
 
+    let legendHasContent = false;
     for (const toggleId in legendMap) {
         const checkbox = document.getElementById(toggleId);
+        console.log(`Verificando checkbox: ${toggleId}, Encontrado: ${!!checkbox}`);
         if (checkbox && checkbox.checked) {
+            legendHasContent = true;
             const layerName = legendMap[toggleId];
+            console.log(`Checkbox ${toggleId} está activo. Generando leyenda para: ${layerName}`);
 
-            // Crea el contenedor
             const entry = document.createElement('div');
-            entry.className = 'legend-entry';
 
-            // Crea el título
             const title = document.createElement('h3');
-            title.textContent = toggleId.replace('toggle', ''); // Ej: 'Deburga'
-            title.style.marginBottom = '5px';
+            let titleText = toggleId.replace('toggle', '');
+            titleText = titleText.charAt(0).toUpperCase() + titleText.slice(1);
+            title.textContent = titleText;
+            title.className = 'text-sm font-semibold text-gray-100 mb-1';
 
-            // Mejora el nombre visualmente
-            title.textContent = title.textContent.charAt(0).toUpperCase() + title.textContent.slice(1);
-
-            // Crea la imagen
             const img = document.createElement('img');
-            img.src = `http://localhost:8080/geoserver/${workspace}/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&LAYER=${layerName}`;
+            // Asegúrate que STYLE sea el correcto o omítelo si es el default.
+            // Si el estilo por defecto no tiene leyenda, no se mostrará nada.
+            const legendUrl = `${geoServerUrl.replace('/ows', '')}/${workspace}/wms?REQUEST=GetLegendGraphic&VERSION=1.1.0&FORMAT=image/png&LAYER=${layerName}&STYLE=`; 
+            console.log(`URL de leyenda: ${legendUrl}`);
+            img.src = legendUrl;
             img.alt = `Leyenda ${layerName}`;
-            img.style.maxWidth = '100%';
-            img.style.borderRadius = '4px';
-            img.style.marginBottom = '12px';
+            img.className = 'max-w-full rounded bg-white p-1 border border-gray-400 shadow-sm';
+            
+            img.onload = function() {
+                console.log(`Leyenda cargada para: ${layerName}`);
+            }
+            img.onerror = function() {
+                console.error(`Error al cargar la leyenda para: ${layerName} desde ${legendUrl}`);
+                const errorText = document.createElement('p');
+                errorText.textContent = `Leyenda no disponible para ${titleText}.`;
+                errorText.className = 'text-xs text-red-300 italic';
+                // Remueve la imagen rota y añade el texto de error.
+                if(img.parentNode) {
+                    img.parentNode.replaceChild(errorText, img);
+                } else {
+                    entry.appendChild(errorText); // Si la imagen no se añadió aún
+                }
+            };
 
-            // Agrega al contenedor
             entry.appendChild(title);
             entry.appendChild(img);
             legendContent.appendChild(entry);
+        } else if (checkbox && !checkbox.checked) {
+            console.log(`Checkbox ${toggleId} NO está activo.`);
         }
+    }
+     // Ocultar o mostrar el panel de leyenda completo si no hay contenido
+    const legendPanel = document.getElementById('legend-panel');
+    if (legendPanel) {
+        legendPanel.style.display = legendHasContent ? 'block' : 'none';
     }
 }
 
@@ -136,120 +162,114 @@ function manejarActivacionRaster() {
 
     let enProceso = false;
 
-    function actualizarEstado(activado) {
+    function actualizarEstadoRaster(activado) {
         if (enProceso) return;
         enProceso = true;
 
-        // Desactivar otras capas si se activa una
-        if (activado === temperatura && temperatura.checked) {
-            vegetacion.checked = false;
-            suelos.checked = false;
-        } else if (activado === vegetacion && vegetacion.checked) {
-            temperatura.checked = false;
-            suelos.checked = false;
-        } else if (activado === suelos && suelos.checked) {
-            temperatura.checked = false;
-            vegetacion.checked = false;
+        const rasterCheckboxes = { temperatura, vegetacion, suelos };
+        for (const key in rasterCheckboxes) {
+            if (rasterCheckboxes[key] !== activado && rasterCheckboxes[key].checked) {
+                rasterCheckboxes[key].checked = false;
+                // Simular evento change para que el listener de loadLayers actúe si es necesario
+                // o manejar directamente la remoción de la capa.
+                // Por simplicidad, asumimos que el listener de loadLayers no maneja estas capas raster
+                // y las gestionamos aquí directamente.
+                if (layers[key] && layers[key].layer && map.hasLayer(layers[key].layer)) {
+                    map.removeLayer(layers[key].layer);
+                }
+            }
+        }
+        
+        const algunaActiva = temperatura.checked || vegetacion.checked || suelos.checked;
+        if (superficie.checked !== algunaActiva) {
+             superficie.checked = algunaActiva;
         }
 
-        // Activar superficie si alguna principal está activa
-        const algunaActiva = temperatura.checked || vegetacion.checked || suelos.checked;
-        superficie.checked = algunaActiva;
-
-        // Primero remover todas las raster para evitar duplicados
-        ['superficie', 'temperatura', 'vegetacion', 'suelos'].forEach(capa => {
-            if (layers[capa]?.layer) {
-                map.removeLayer(layers[capa].layer);
+        // Remover y re-agregar en orden correcto
+        ['superficie', 'temperatura', 'vegetacion', 'suelos'].forEach(key => {
+            if (layers[key] && layers[key].layer && map.hasLayer(layers[key].layer)) {
+                map.removeLayer(layers[key].layer);
             }
         });
-
-        // Agregar superficie primero
-        if (superficie.checked) {
+        
+        if (superficie.checked && layers.superficie.layer) {
             map.addLayer(layers.superficie.layer);
         }
 
-        // Luego la capa activa principal
-        if (temperatura.checked) {
+        if (temperatura.checked && layers.temperatura.layer) {
             map.addLayer(layers.temperatura.layer);
-        } else if (vegetacion.checked) {
-                map.addLayer(layers.vegetacion.layer);
-            } else if (suelos.checked) {
+        } else if (vegetacion.checked && layers.vegetacion.layer) {
+            map.addLayer(layers.vegetacion.layer);
+        } else if (suelos.checked && layers.suelos.layer) {
             map.addLayer(layers.suelos.layer);
         }
-
+        
         updateLegend();
         enProceso = false;
     }
 
-    temperatura.addEventListener('change', () => actualizarEstado(temperatura));
-    vegetacion.addEventListener('change', () => actualizarEstado(vegetacion));
-    suelos.addEventListener('change', () => actualizarEstado(suelos));
+    [temperatura, vegetacion, suelos].forEach(chk => {
+        if(chk) chk.addEventListener('change', () => actualizarEstadoRaster(chk));
+    });
 }
 
-// --- Manejo de capas ---
-function updateLayerVisibility(checkbox, layerKey) {
-    const layer = layers[layerKey]?.layer;
-    if (!layer) return;
-
-    if (checkbox.checked) {
-        map.addLayer(layer);
-    } else {
-        map.removeLayer(layer);
-    }
-}
-
-
-
-// --- Crear capa WMS ---
 function createWMSLayer(layerName, filter = "INCLUDE") {
     return L.tileLayer.wms(geoServerUrl, {
         layers: layerName,
         format: 'image/png',
         transparent: true,
-        version: '1.1.1',
+        version: '1.1.1', // GeoServer prefiere 1.1.1 o 1.3.0 para GetLegendGraphic también
         CQL_FILTER: filter
     });
 }
 
-// --- Cargar todas las capas ---
 function loadLayers() {
     for (const key in layers) {
         const obj = layers[key];
-        const filter = obj.selectId ? "INCLUDE" : undefined;
-        obj.layer = createWMSLayer(obj.name, filter);
+        const initialFilter = obj.selectId ? "INCLUDE" : undefined;
+        obj.layer = createWMSLayer(obj.name, initialFilter);
 
-        // No se agrega la capa por defecto, solo se escucha el checkbox
         if (obj.toggleId) {
             const toggle = document.getElementById(obj.toggleId);
-            toggle.addEventListener('change', () => {
-                if (toggle.checked) {
-                    map.addLayer(obj.layer);
-                } else {
-                    map.removeLayer(obj.layer);
+            if (toggle) {
+                const isSpecialRaster = ['temperatura', 'vegetacion', 'suelos', 'superficie'].includes(key);
+
+                if (!isSpecialRaster) { // Las capas raster especiales son manejadas por manejarActivacionRaster
+                    toggle.addEventListener('change', () => {
+                        if (toggle.checked) {
+                            if (obj.layer && !map.hasLayer(obj.layer)) map.addLayer(obj.layer);
+                        } else {
+                            if (obj.layer && map.hasLayer(obj.layer)) map.removeLayer(obj.layer);
+                        }
+                        updateLegend(); // Actualizar leyenda al cambiar cualquier capa no especial
+                    });
+                } else if (key === 'superficie') { // La capa superficie solo reacciona a su checkbox para la leyenda
+                     toggle.addEventListener('change', () => {
+                        // La visibilidad es manejada por manejarActivacionRaster, pero la leyenda se actualiza
+                        updateLegend(); 
+                    });
                 }
-                updateLegend(); // Actualiza leyenda al marcar
-            });
+            }
         }
 
-        // Listener de filtro (si aplica)
         if (obj.selectId) {
             const selector = document.getElementById(obj.selectId);
-            selector.addEventListener('change', () => {
-                const value = selector.value;
-                const filter = value ? `${obj.filterField} = '${value}'` : 'INCLUDE';
-                obj.layer.setParams({
-                    CQL_FILTER: filter,
-                    TILE: Math.random()
+            if (selector) {
+                selector.addEventListener('change', () => {
+                    const value = selector.value;
+                    const filterValue = value ? `${obj.filterField} = '${value}'` : 'INCLUDE';
+                    obj.layer.setParams({
+                        CQL_FILTER: filterValue,
+                        _refresh: new Date().getTime() 
+                    });
+                    // No es necesario redibujar manualmente si la capa ya está en el mapa, setParams lo hace.
                 });
-            });
+            }
         }
     }
-
-    updateLegend(); // Se ejecuta una vez para limpiar si fuera necesario
+    updateLegend(); // Llamada inicial para limpiar o mostrar leyendas al cargar.
 }
-
 
 // --- Ejecutar carga inicial ---
 loadLayers();
-manejarActivacionRaster(); // ← Aquí
-
+manejarActivacionRaster();

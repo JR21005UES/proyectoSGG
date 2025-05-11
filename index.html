@@ -6,268 +6,170 @@
   <title>Mapa de Islas de Calor Urbano</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" />
-  <link rel="stylesheet" href="css/style.css" />
+  <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
-<body>
-  <!-- Menú lateral estilo QGIS -->
-  <div id="topbar">
-    <!-- Logo -->
-    <div id="logo-container">
+<body class="bg-[#eaf3fb] p-5 font-sans min-h-screen flex">
+
+  <div id="topbar" class="w-60 bg-[#2c3e50] text-white p-5 rounded-lg flex flex-col h-[calc(100vh-2.5rem)]">
+    <div id="logo-container" class="flex justify-center mb-3">
       <img src="https://www.ues.edu.sv/wp-content/uploads/sites/20/2024/08/light-header-v2.png"
-        alt="Logo UES" id="logo-ues">
-    </div>
-    <div id="titulo">
-      <h2>SIG</h2>
+           alt="Logo UES" id="logo-ues" class="w-full h-auto max-h-16 object-contain">
     </div>
 
-    <div id="subtitulo">
-      <h2>Capas Vectoriales</h2>
-    </div>
-    <!-- Ríos -->
-    <div class="layer-group">
-      <label><input type="checkbox" id="toggleRios" > Ríos y vías de agua</label>
+    <div id="titulo" class="mb-3 text-center">
+      <h2 class="text-xl font-bold">Capas</h2>
     </div>
 
-    <!-- CARRETERAS -->
-    <div class="layer-group">
-      <label><input type="checkbox" id="toggleCarreteras" > Carreteras</label>
+    <div class="flex-grow overflow-y-auto space-y-1 pr-1 custom-scrollbar">
+      
+      <div id="subtitulo-vectorial">
+        <h2 class="text-base font-semibold mb-1 text-gray-200 sticky top-0 bg-[#2c3e50] py-1 z-10">Capas Vectoriales</h2>
+      </div>
+
+      <div class="layer-group">
+        <label class="flex items-center font-semibold text-sm cursor-pointer hover:bg-gray-700/50 p-1 rounded">
+          <input type="checkbox" id="toggleRios" class="form-checkbox mr-2 text-blue-500 bg-gray-700 border-gray-600 rounded focus:ring-blue-500">
+          Ríos y vías de agua
+        </label>
+      </div>
+      <div class="layer-group">
+        <label class="flex items-center font-semibold text-sm cursor-pointer hover:bg-gray-700/50 p-1 rounded">
+          <input type="checkbox" id="toggleCarreteras" class="form-checkbox mr-2 text-blue-500 bg-gray-700 border-gray-600 rounded focus:ring-blue-500">
+          Carreteras
+        </label>
+      </div>
+      <div class="layer-group">
+        <label class="flex items-center font-semibold text-sm cursor-pointer hover:bg-gray-700/50 p-1 rounded">
+          <input type="checkbox" id="toggleConstrucciones" class="form-checkbox mr-2 text-blue-500 bg-gray-700 border-gray-600 rounded focus:ring-blue-500">
+          Construcciones
+        </label>
+      </div>
+      <div class="layer-group">
+        <label class="flex items-center font-semibold text-sm cursor-pointer hover:bg-gray-700/50 p-1 rounded">
+          <input type="checkbox" id="toggleCuerpos" class="form-checkbox mr-2 text-blue-500 bg-gray-700 border-gray-600 rounded focus:ring-blue-500">
+          Cuerpos de agua
+        </label>
+      </div>
+
+      <div class="layer-group">
+        <label class="flex items-center font-semibold text-sm cursor-pointer hover:bg-gray-700/50 p-1 rounded">
+          <input type="checkbox" id="toggleDeburga" class="form-checkbox mr-2 text-blue-500 bg-gray-700 border-gray-600 rounded focus:ring-blue-500">
+          DEGURBA
+        </label>
+        <select id="deburgaSelect" class="ml-[22px] mt-1 w-[calc(100%-22px)] bg-[#f8fbfe] border border-gray-400 p-1 rounded text-xs text-gray-800 focus:ring-blue-500 focus:border-blue-500">
+          <option value="">-- Mostrar Todas --</option>
+          <option value="Ciudades">Ciudades</option>
+          <option value="Zonas rurales">Zonas rurales</option>
+          <option value="Zonas rurales dispersas">Zonas rurales dispersas</option>
+          <option value="Zonas suburbanas o periurbanas">Zonas suburbanas o periurbanas</option>
+        </select>
+      </div>
+
+      <div class="layer-group">
+        <label class="flex items-center font-semibold text-sm cursor-pointer hover:bg-gray-700/50 p-1 rounded">
+          <input type="checkbox" id="toggleDistrito" class="form-checkbox mr-2 text-blue-500 bg-gray-700 border-gray-600 rounded focus:ring-blue-500">
+          Distritos
+        </label>
+        <select id="distritoSelect" class="ml-[22px] mt-1 w-[calc(100%-22px)] bg-[#f8fbfe] border border-gray-400 p-1 rounded text-xs text-gray-800 focus:ring-blue-500 focus:border-blue-500">
+          <option value="">-- Mostrar Todos --</option>
+          <option value="Aguilares">Aguilares</option>
+          <option value="Ahuachapán">Ahuachapán</option>
+          {/* */}
+        </select>
+      </div>
+
+      <div class="layer-group">
+        <label class="flex items-center font-semibold text-sm cursor-pointer hover:bg-gray-700/50 p-1 rounded">
+          <input type="checkbox" id="toggleMunicipios" class="form-checkbox mr-2 text-blue-500 bg-gray-700 border-gray-600 rounded focus:ring-blue-500">
+          Municipios
+        </label>
+        <select id="municipioSelect" class="ml-[22px] mt-1 w-[calc(100%-22px)] bg-[#f8fbfe] border border-gray-400 p-1 rounded text-xs text-gray-800 focus:ring-blue-500 focus:border-blue-500">
+          <option value="">-- Mostrar Todos --</option>
+          <option value="Usulután Este">Usulután Este</option>
+          {/* */}
+        </select>
+      </div>
+
+      <div class="layer-group">
+        <label class="flex items-center font-semibold text-sm cursor-pointer hover:bg-gray-700/50 p-1 rounded">
+          <input type="checkbox" id="toggleDepartamento" class="form-checkbox mr-2 text-blue-500 bg-gray-700 border-gray-600 rounded focus:ring-blue-500">
+          Departamentos
+        </label>
+        <select id="departamentoSelect" class="ml-[22px] mt-1 w-[calc(100%-22px)] bg-[#f8fbfe] border border-gray-400 p-1 rounded text-xs text-gray-800 focus:ring-blue-500 focus:border-blue-500">
+          <option value="">-- Mostrar Todos --</option>
+          <option value="Ahuachapán">Ahuachapán</option>
+          {/* */}
+        </select>
+      </div>
+
+      <div id="subtitulo-raster" class="mt-2">
+        <h2 class="text-base font-semibold mb-1 text-gray-200 sticky top-0 bg-[#2c3e50] py-1 z-10">Capas Ráster</h2>
+      </div>
+      <div class="layer-group">
+        <label class="flex items-center font-semibold text-sm cursor-pointer hover:bg-gray-700/50 p-1 rounded">
+          <input type="checkbox" id="toggleTemperatura" class="form-checkbox mr-2 text-blue-500 bg-gray-700 border-gray-600 rounded focus:ring-blue-500">
+          Temperatura
+        </label>
+      </div>
+      <div class="layer-group">
+        <label class="flex items-center font-semibold text-sm cursor-pointer hover:bg-gray-700/50 p-1 rounded">
+          <input type="checkbox" id="toggleVegetacion" class="form-checkbox mr-2 text-blue-500 bg-gray-700 border-gray-600 rounded focus:ring-blue-500">
+          Vegetación
+        </label>
+      </div>
+      <div class="layer-group">
+        <label class="flex items-center font-semibold text-sm cursor-pointer hover:bg-gray-700/50 p-1 rounded">
+          <input type="checkbox" id="toggleSuelos" class="form-checkbox mr-2 text-blue-500 bg-gray-700 border-gray-600 rounded focus:ring-blue-500">
+          Suelos
+        </label>
+      </div>
+      <div class="layer-group">
+        <label class="flex items-center font-semibold text-sm cursor-pointer hover:bg-gray-700/50 p-1 rounded">
+          <input type="checkbox" id="toggleSuperficie" class="form-checkbox mr-2 text-blue-500 bg-gray-700 border-gray-600 rounded focus:ring-blue-500">
+          Superficie
+        </label>
+      </div>
     </div>
-
-    <!-- Construcciones -->
-    <div class="layer-group">
-      <label><input type="checkbox" id="toggleConstrucciones" > Construcciones</label>
-    </div>
-
-    <!-- Cuerpos de agua -->
-    <div class="layer-group">
-      <label><input type="checkbox" id="toggleCuerpos" >Cuerpos de agua</label>
-    </div>
-
-    <!-- DEGURBA -->
-    <div class="layer-group">
-      <label><input type="checkbox" id="toggleDeburga" > DEGURBA</label>
-      <select id="deburgaSelect">
-        <option value="">-- Mostrar Todas --</option>
-        <option value="Ciudades">Ciudades</option>
-        <option value="Zonas rurales">Zonas rurales</option>
-        <option value="Zonas rurales dispersas">Zonas rurales dispersas</option>
-        <option value="Zonas suburbanas o periurbanas">Zonas suburbanas o periurbanas</option>
-      </select>
-    </div>
-
-    <!-- Distritos -->
-    <div class="layer-group">
-      <label><input type="checkbox" id="toggleDistrito" > Distritos</label>
-      <select id="distritoSelect">
-        <option value="">-- Mostrar Todos --</option>
-        <option value="Aguilares">Aguilares</option>
-        <option value="Ahuachapán">Ahuachapán</option>
-        <option value="Alegría">Alegría</option>
-        <option value="Antiguo Cuscatlán">Antiguo Cuscatlán</option>
-        <option value="Apaneca">Apaneca</option>
-        <option value="Apopa">Apopa</option>
-        <option value="Atiquizaya">Atiquizaya</option>
-        <option value="Ayutuxtepeque">Ayutuxtepeque</option>
-        <option value="Berlín">Berlín</option>
-        <option value="California">California</option>
-        <option value="Candelaria de la Frontera">Candelaria de la Frontera</option>
-        <option value="Carolina">Carolina</option>
-        <option value="Chalchuapa">Chalchuapa</option>
-        <option value="Chapeltique">Chapeltique</option>
-        <option value="Chirilagua">Chirilagua</option>
-        <option value="Chinameca">Chinameca</option>
-        <option value="Chiltiupán">Chiltiupán</option>
-        <option value="Ciudad Arce">Ciudad Arce</option>
-        <option value="Ciudad Barrios">Ciudad Barrios</option>
-        <option value="Coatepeque">Coatepeque</option>
-        <option value="Colón">Colón</option>
-        <option value="Comacarán">Comacarán</option>
-        <option value="Comasagua">Comasagua</option>
-        <option value="Concepción Batres">Concepción Batres</option>
-        <option value="Concepción de Ataco">Concepción de Ataco</option>
-        <option value="Cuscatancingo">Cuscatancingo</option>
-        <option value="Delgado">Delgado</option>
-        <option value="El Congo">El Congo</option>
-        <option value="El Paisnal">El Paisnal</option>
-        <option value="El Porvenir">El Porvenir</option>
-        <option value="El Refugio">El Refugio</option>
-        <option value="El Tránsito">El Tránsito</option>
-        <option value="El Triunfo">El Triunfo</option>
-        <option value="Ereguayquín">Ereguayquín</option>
-        <option value="Estanzuelas">Estanzuelas</option>
-        <option value="Guaymango">Guaymango</option>
-        <option value="Guazapa">Guazapa</option>
-        <option value="Huizúcar">Huizúcar</option>
-        <option value="Ilopango">Ilopango</option>
-        <option value="Jayaque">Jayaque</option>
-        <option value="Jicalapa">Jicalapa</option>
-        <option value="Jiquilisco">Jiquilisco</option>
-        <option value="Jucuapa">Jucuapa</option>
-        <option value="Jucuarán">Jucuarán</option>
-        <option value="Jujutla">Jujutla</option>
-        <option value="La Libertad">La Libertad</option>
-        <option value="Lago de Coatepeque">Lago de Coatepeque</option>
-        <option value="Lago de Guija">Lago de Guija</option>
-        <option value="Lago de Ilopango">Lago de Ilopango</option>
-        <option value="Lolotique">Lolotique</option>
-        <option value="Masahuat">Masahuat</option>
-        <option value="Mejicanos">Mejicanos</option>
-        <option value="Mercedes Umaña">Mercedes Umaña</option>
-        <option value="Metapán">Metapán</option>
-        <option value="Moncagua">Moncagua</option>
-        <option value="Nejapa">Nejapa</option>
-        <option value="Nueva Granada">Nueva Granada</option>
-        <option value="Nueva Guadalupe">Nueva Guadalupe</option>
-        <option value="Nuevo Cuscatlán">Nuevo Cuscatlán</option>
-        <option value="Nuevo Edén de San Juan">Nuevo Edén de San Juan</option>
-        <option value="Ozatlán">Ozatlán</option>
-        <option value="Panchimalco">Panchimalco</option>
-        <option value="Puerto El Triunfo">Puerto El Triunfo</option>
-        <option value="Quelepa">Quelepa</option>
-        <option value="Quezaltepeque">Quezaltepeque</option>
-        <option value="Rosario de Mora">Rosario de Mora</option>
-        <option value="Sacacoyo">Sacacoyo</option>
-        <option value="San Agustín">San Agustín</option>
-        <option value="San Antonio">San Antonio</option>
-        <option value="San Antonio Pajonal">San Antonio Pajonal</option>
-        <option value="San Bartolomé Perulapía">San Bartolomé Perulapía</option>
-        <option value="San Dionisio">San Dionisio</option>
-        <option value="San Francisco Javier">San Francisco Javier</option>
-        <option value="San Francisco Menéndez">San Francisco Menéndez</option>
-        <option value="San Gerardo">San Gerardo</option>
-        <option value="San Jorge">San Jorge</option>
-        <option value="San José Villanueva">San José Villanueva</option>
-        <option value="San Juan Opico">San Juan Opico</option>
-        <option value="San Lorenzo">San Lorenzo</option>
-        <option value="San Luis de la Reina">San Luis de la Reina</option>
-        <option value="San Marcos">San Marcos</option>
-        <option value="San Martín">San Martín</option>
-        <option value="San Matías">San Matías</option>
-        <option value="San Miguel">San Miguel</option>
-        <option value="San Pablo Tacachico">San Pablo Tacachico</option>
-        <option value="San Pedro Puxtla">San Pedro Puxtla</option>
-        <option value="San Rafael">San Rafael</option>
-        <option value="San Salvador">San Salvador</option>
-        <option value="San Sebastián Salitrillo">San Sebastián Salitrillo</option>
-        <option value="Santa Ana">Santa Ana</option>
-        <option value="Santa Elena">Santa Elena</option>
-        <option value="Santa María">Santa María</option>
-        <option value="Santa Rosa Guachipilín">Santa Rosa Guachipilín</option>
-        <option value="Santa Tecla">Santa Tecla</option>
-        <option value="Santiago de la Frontera">Santiago de la Frontera</option>
-        <option value="Santiago de María">Santiago de María</option>
-        <option value="Santiago Texacuangos">Santiago Texacuangos</option>
-        <option value="Santo Tomás">Santo Tomás</option>
-        <option value="Sesori">Sesori</option>
-        <option value="Soyapango">Soyapango</option>
-        <option value="Tacuba">Tacuba</option>
-        <option value="Talnique">Talnique</option>
-        <option value="Tamanique">Tamanique</option>
-        <option value="Tecapán">Tecapán</option>
-        <option value="Teotepeque">Teotepeque</option>
-        <option value="Tepecoyo">Tepecoyo</option>
-        <option value="Texistepeque">Texistepeque</option>
-        <option value="Tonacatepeque">Tonacatepeque</option>
-        <option value="Turín">Turín</option>
-        <option value="Uluazapa">Uluazapa</option>
-        <option value="Usulután">Usulután</option>
-        <option value="Zaragoza">Zaragoza</option>
-      </select>
-    </div>
-
-
-    <!-- MUNICIPIOS -->
-    <div class="layer-group">
-      <label><input type="checkbox" id="toggleMunicipios" > Municipios</label>
-      <select id="municipioSelect">
-        <option value="">-- Mostrar Todos --</option>
-        <option value="Usulután Este">Usulután Este</option>
-        <option value="Usulután Norte">Usulután Norte</option>
-        <option value="Usulután Oeste">Usulután Oeste</option>
-        <option value="Santa Ana Centro">Santa Ana Centro</option>
-        <option value="Santa Ana Este">Santa Ana Este</option>
-        <option value="Santa Ana Norte">Santa Ana Norte</option>
-        <option value="Santa Ana Oeste">Santa Ana Oeste</option>
-        <option value="Lago de Guija">Lago de Guija</option>
-        <option value="Lago de Coatepeque">Lago de Coatepeque</option>
-        <option value="San Salvador Centro">San Salvador Centro</option>
-        <option value="San Salvador Este">San Salvador Este</option>
-        <option value="San Salvador Norte">San Salvador Norte</option>
-        <option value="San Salvador Oeste">San Salvador Oeste</option>
-        <option value="San Salvador Sur">San Salvador Sur</option>
-        <option value="Lago de Ilopango">Lago de Ilopango</option>
-        <option value="San Miguel Centro">San Miguel Centro</option>
-        <option value="San Miguel Norte">San Miguel Norte</option>
-        <option value="San Miguel Oeste">San Miguel Oeste</option>
-        <option value="La Libertad Centro">La Libertad Centro</option>
-        <option value="La Libertad Costa">La Libertad Costa</option>
-        <option value="La Libertad Este">La Libertad Este</option>
-        <option value="La Libertad Norte">La Libertad Norte</option>
-        <option value="La Libertad Oeste">La Libertad Oeste</option>
-        <option value="La Libertad Sur">La Libertad Sur</option>
-        <option value="Ahuachapán Centro">Ahuachapán Centro</option>
-        <option value="Ahuachapán Norte">Ahuachapán Norte</option>
-        <option value="Ahuachapán Sur">Ahuachapán Sur</option>
-      </select>
-    </div>
-
-    <!-- Departamentos -->
-    <div class="layer-group">
-      <label><input type="checkbox" id="toggleDepartamento" > Departamentos</label>
-      <select id="departamentoSelect">
-        <option value="">-- Mostrar Todos --</option>
-        <option value="Ahuachapán">Ahuachapán</option>
-        <option value="Santa Ana">Santa Ana</option>
-        <option value="La Libertad">La Libertad</option>
-        <option value="San Salvador">San Salvador</option>
-        <option value="Usulután">Usulután</option>
-        <option value="San Miguel">San Miguel</option>
-      </select>
-    </div>
-
-
-
-
-
-    <div id="subtitulo">
-      <h2>Capas Ráster</h2>
-    </div>
-    <!-- Temperatura -->
-    <div class="layer-group">
-      <label><input type="checkbox" id="toggleTemperatura" > Temperatura</label>
-    </div>
-
-    <!-- Vegetacion -->
-    <div class="layer-group">
-      <label><input type="checkbox" id="toggleVegetacion" > Vegetación</label>
-    </div>
-
-    <!-- Suelos -->
-    <div class="layer-group">
-      <label><input type="checkbox" id="toggleSuelos" > Suelos</label>
-    </div>
-    <!-- Superficie -->
-    <div class="layer-group">
-      <label><input type="checkbox" id="toggleSuperficie" > Superficie</label>
-    </div>
-
   </div>
 
-  <!-- Mapa -->
-  <div id="map-container">
-    <div id="map"></div>
+  <div id="legend-panel" class="absolute top-5 right-5 w-[200px] bg-[#2c3e50] text-white p-4 m-4 rounded-lg shadow-md z-[1001]"> 
+    <h2 class="text-lg font-semibold mb-2 pb-1.5 border-b border-white/40">Leyenda</h2>
+    <div id="legend-content" class="space-y-4 custom-scrollbar overflow-y-auto max-h-[calc(100vh-10rem)]"> 
+
+    </div>
+  </div>
+  <div id="map-container" class="flex-1 ml-5 border-2 border-gray-300 rounded-lg overflow-hidden shadow-md bg-white flex">
+    <div id="map" class="w-full h-full"></div>
   </div>
 
-  <!-- Panel de leyenda dinámico -->
-  <div id="legend-panel">
-    <h2>Leyenda</h2>
-    <div id="legend-content"></div>
-  </div>
+  
 
-  <!-- Scripts -->
   <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
   <script src="js/script.js"></script>
-</body>
+  <style>
+    /* Estilos para una barra de scroll más delgada y oscura, compatible con Webkit (Chrome, Safari, Edge) */
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 6px; /* Ancho de la barra de scroll */
+    }
+    .custom-scrollbar::-webkit-scrollbar-track {
+      background: #2c3e50; /* Color del track, igual al fondo del panel */
+      border-radius: 3px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background-color: #5b7a9d; /* Color del thumb (la parte que se mueve) */
+      border-radius: 3px;
+      border: 1px solid #2c3e50; /* Borde opcional para el thumb */
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+      background-color: #7492b3; /* Color del thumb al pasar el mouse */
+    }
 
+    /* Para Firefox (más limitado, pero algo se puede hacer) */
+    .custom-scrollbar {
+      scrollbar-width: thin; /* "auto" o "thin" */
+      scrollbar-color: #5b7a9d #2c3e50; /* thumb track */
+    }
+  </style>
+</body>
 </html>
