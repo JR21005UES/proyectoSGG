@@ -87,6 +87,23 @@
   <div id="map-container">
     <div id="map"></div>
   </div>
+  <div id="legend-panel">
+    <h2>Leyenda</h2>
+    <div>
+      <h3>Degurba</h3>
+      <img
+        src="http://localhost:8080/geoserver/SGG/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&LAYER=SGG:deburga"
+        alt="Leyenda DEGURBA" />
+    </div>
+    <div>
+      <h3>Municipios</h3>
+      <img
+        src="http://localhost:8080/geoserver/SGG/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&LAYER=SGG:municipios"
+        alt="Leyenda Municipios" />
+    </div>
+    <!-- Agrega más <img> para otras capas si deseas -->
+  </div>
+
   <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
   <script src="js/script.js"></script>
 </body>

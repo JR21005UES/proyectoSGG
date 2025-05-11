@@ -12,7 +12,7 @@ const workspace = 'SGG';
 
 const layers = {
     temperatura: {
-        name: `${workspace}:Land Surface Tempertaure - Zone`,
+        name: `${workspace}:temperatura`,
         layer: null,
         toggleId: 'toggleTemperatura'
     },
@@ -36,17 +36,17 @@ const layers = {
         toggleId: 'toggleCarreteras'
     },
     vegetacion: {
-        name: `${workspace}:Normalized Difference Vegetation Index - Zone   `,
+        name: `${workspace}:vegetacion`,
         layer: null,
         toggleId: 'toggleVegetacion'
     },
     superficie: {
-        name: `${workspace}:Shading (Superficie)`,
+        name: `${workspace}:superficie`,
         layer: null,
         toggleId: 'toggleSuperficie'
     },
     suelos: {
-        name: `${workspace}:Uso de Suelo`,
+        name: `${workspace}:suelos`,
         layer: null,
         toggleId: 'toggleSuelos'
     },
