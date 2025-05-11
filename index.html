@@ -14,20 +14,39 @@
   <div id="topbar">
     <!-- Logo -->
     <div id="logo-container">
-      <img src="https://es.m.wikipedia.org/wiki/Archivo:Escudo_de_la_Universidad_de_El_Salvador.svg" alt="Logo UES"
-        id="logo-ues">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/9/9d/Escudo_de_la_Universidad_de_El_Salvador.svg"
+        alt="Logo UES" id="logo-ues">
     </div>
     <div id="titulo">
       <h2>SIG</h2>
     </div>
+
     <div id="subtitulo">
       <h2>Capas Vectoriales</h2>
     </div>
+    <!-- Ríos -->
+    <div class="layer-group">
+      <label><input type="checkbox" id="toggleRios" > Ríos y vías de agua</label>
+    </div>
 
+    <!-- CARRETERAS -->
+    <div class="layer-group">
+      <label><input type="checkbox" id="toggleCarreteras" > Carreteras</label>
+    </div>
+
+    <!-- Construcciones -->
+    <div class="layer-group">
+      <label><input type="checkbox" id="toggleConstrucciones" > Construcciones</label>
+    </div>
+
+    <!-- Cuerpos de agua -->
+    <div class="layer-group">
+      <label><input type="checkbox" id="toggleCuerpos" >Cuerpos de agua</label>
+    </div>
 
     <!-- DEGURBA -->
     <div class="layer-group">
-      <label><input type="checkbox" id="toggleDeburga" checked> DEGURBA</label>
+      <label><input type="checkbox" id="toggleDeburga" > DEGURBA</label>
       <select id="deburgaSelect">
         <option value="">-- Mostrar Todas --</option>
         <option value="Ciudades">Ciudades</option>
@@ -37,10 +56,166 @@
       </select>
     </div>
 
+    <!-- Distritos -->
+    <div class="layer-group">
+      <label><input type="checkbox" id="toggleDistrito" > Distritos</label>
+      <select id="distritoSelect">
+        <option value="">-- Mostrar Todos --</option>
+        <option value="Aguilares">Aguilares</option>
+        <option value="Ahuachapán">Ahuachapán</option>
+        <option value="Alegría">Alegría</option>
+        <option value="Antiguo Cuscatlán">Antiguo Cuscatlán</option>
+        <option value="Apaneca">Apaneca</option>
+        <option value="Apopa">Apopa</option>
+        <option value="Atiquizaya">Atiquizaya</option>
+        <option value="Ayutuxtepeque">Ayutuxtepeque</option>
+        <option value="Berlín">Berlín</option>
+        <option value="California">California</option>
+        <option value="Candelaria de la Frontera">Candelaria de la Frontera</option>
+        <option value="Carolina">Carolina</option>
+        <option value="Chalchuapa">Chalchuapa</option>
+        <option value="Chapeltique">Chapeltique</option>
+        <option value="Chirilagua">Chirilagua</option>
+        <option value="Chinameca">Chinameca</option>
+        <option value="Chiltiupán">Chiltiupán</option>
+        <option value="Ciudad Arce">Ciudad Arce</option>
+        <option value="Ciudad Barrios">Ciudad Barrios</option>
+        <option value="Coatepeque">Coatepeque</option>
+        <option value="Colón">Colón</option>
+        <option value="Comacarán">Comacarán</option>
+        <option value="Comasagua">Comasagua</option>
+        <option value="Concepción Batres">Concepción Batres</option>
+        <option value="Concepción de Ataco">Concepción de Ataco</option>
+        <option value="Cuscatancingo">Cuscatancingo</option>
+        <option value="Delgado">Delgado</option>
+        <option value="El Congo">El Congo</option>
+        <option value="El Paisnal">El Paisnal</option>
+        <option value="El Porvenir">El Porvenir</option>
+        <option value="El Refugio">El Refugio</option>
+        <option value="El Tránsito">El Tránsito</option>
+        <option value="El Triunfo">El Triunfo</option>
+        <option value="Ereguayquín">Ereguayquín</option>
+        <option value="Estanzuelas">Estanzuelas</option>
+        <option value="Guaymango">Guaymango</option>
+        <option value="Guazapa">Guazapa</option>
+        <option value="Huizúcar">Huizúcar</option>
+        <option value="Ilopango">Ilopango</option>
+        <option value="Jayaque">Jayaque</option>
+        <option value="Jicalapa">Jicalapa</option>
+        <option value="Jiquilisco">Jiquilisco</option>
+        <option value="Jucuapa">Jucuapa</option>
+        <option value="Jucuarán">Jucuarán</option>
+        <option value="Jujutla">Jujutla</option>
+        <option value="La Libertad">La Libertad</option>
+        <option value="Lago de Coatepeque">Lago de Coatepeque</option>
+        <option value="Lago de Guija">Lago de Guija</option>
+        <option value="Lago de Ilopango">Lago de Ilopango</option>
+        <option value="Lolotique">Lolotique</option>
+        <option value="Masahuat">Masahuat</option>
+        <option value="Mejicanos">Mejicanos</option>
+        <option value="Mercedes Umaña">Mercedes Umaña</option>
+        <option value="Metapán">Metapán</option>
+        <option value="Moncagua">Moncagua</option>
+        <option value="Nejapa">Nejapa</option>
+        <option value="Nueva Granada">Nueva Granada</option>
+        <option value="Nueva Guadalupe">Nueva Guadalupe</option>
+        <option value="Nuevo Cuscatlán">Nuevo Cuscatlán</option>
+        <option value="Nuevo Edén de San Juan">Nuevo Edén de San Juan</option>
+        <option value="Ozatlán">Ozatlán</option>
+        <option value="Panchimalco">Panchimalco</option>
+        <option value="Puerto El Triunfo">Puerto El Triunfo</option>
+        <option value="Quelepa">Quelepa</option>
+        <option value="Quezaltepeque">Quezaltepeque</option>
+        <option value="Rosario de Mora">Rosario de Mora</option>
+        <option value="Sacacoyo">Sacacoyo</option>
+        <option value="San Agustín">San Agustín</option>
+        <option value="San Antonio">San Antonio</option>
+        <option value="San Antonio Pajonal">San Antonio Pajonal</option>
+        <option value="San Bartolomé Perulapía">San Bartolomé Perulapía</option>
+        <option value="San Dionisio">San Dionisio</option>
+        <option value="San Francisco Javier">San Francisco Javier</option>
+        <option value="San Francisco Menéndez">San Francisco Menéndez</option>
+        <option value="San Gerardo">San Gerardo</option>
+        <option value="San Jorge">San Jorge</option>
+        <option value="San José Villanueva">San José Villanueva</option>
+        <option value="San Juan Opico">San Juan Opico</option>
+        <option value="San Lorenzo">San Lorenzo</option>
+        <option value="San Luis de la Reina">San Luis de la Reina</option>
+        <option value="San Marcos">San Marcos</option>
+        <option value="San Martín">San Martín</option>
+        <option value="San Matías">San Matías</option>
+        <option value="San Miguel">San Miguel</option>
+        <option value="San Pablo Tacachico">San Pablo Tacachico</option>
+        <option value="San Pedro Puxtla">San Pedro Puxtla</option>
+        <option value="San Rafael">San Rafael</option>
+        <option value="San Salvador">San Salvador</option>
+        <option value="San Sebastián Salitrillo">San Sebastián Salitrillo</option>
+        <option value="Santa Ana">Santa Ana</option>
+        <option value="Santa Elena">Santa Elena</option>
+        <option value="Santa María">Santa María</option>
+        <option value="Santa Rosa Guachipilín">Santa Rosa Guachipilín</option>
+        <option value="Santa Tecla">Santa Tecla</option>
+        <option value="Santiago de la Frontera">Santiago de la Frontera</option>
+        <option value="Santiago de María">Santiago de María</option>
+        <option value="Santiago Texacuangos">Santiago Texacuangos</option>
+        <option value="Santo Tomás">Santo Tomás</option>
+        <option value="Sesori">Sesori</option>
+        <option value="Soyapango">Soyapango</option>
+        <option value="Tacuba">Tacuba</option>
+        <option value="Talnique">Talnique</option>
+        <option value="Tamanique">Tamanique</option>
+        <option value="Tecapán">Tecapán</option>
+        <option value="Teotepeque">Teotepeque</option>
+        <option value="Tepecoyo">Tepecoyo</option>
+        <option value="Texistepeque">Texistepeque</option>
+        <option value="Tonacatepeque">Tonacatepeque</option>
+        <option value="Turín">Turín</option>
+        <option value="Uluazapa">Uluazapa</option>
+        <option value="Usulután">Usulután</option>
+        <option value="Zaragoza">Zaragoza</option>
+      </select>
+    </div>
+
+
     <!-- MUNICIPIOS -->
     <div class="layer-group">
-      <label><input type="checkbox" id="toggleMunicipios" checked> Municipios</label>
+      <label><input type="checkbox" id="toggleMunicipios" > Municipios</label>
       <select id="municipioSelect">
+        <option value="">-- Mostrar Todos --</option>
+        <option value="Usulután Este">Usulután Este</option>
+        <option value="Usulután Norte">Usulután Norte</option>
+        <option value="Usulután Oeste">Usulután Oeste</option>
+        <option value="Santa Ana Centro">Santa Ana Centro</option>
+        <option value="Santa Ana Este">Santa Ana Este</option>
+        <option value="Santa Ana Norte">Santa Ana Norte</option>
+        <option value="Santa Ana Oeste">Santa Ana Oeste</option>
+        <option value="Lago de Guija">Lago de Guija</option>
+        <option value="Lago de Coatepeque">Lago de Coatepeque</option>
+        <option value="San Salvador Centro">San Salvador Centro</option>
+        <option value="San Salvador Este">San Salvador Este</option>
+        <option value="San Salvador Norte">San Salvador Norte</option>
+        <option value="San Salvador Oeste">San Salvador Oeste</option>
+        <option value="San Salvador Sur">San Salvador Sur</option>
+        <option value="Lago de Ilopango">Lago de Ilopango</option>
+        <option value="San Miguel Centro">San Miguel Centro</option>
+        <option value="San Miguel Norte">San Miguel Norte</option>
+        <option value="San Miguel Oeste">San Miguel Oeste</option>
+        <option value="La Libertad Centro">La Libertad Centro</option>
+        <option value="La Libertad Costa">La Libertad Costa</option>
+        <option value="La Libertad Este">La Libertad Este</option>
+        <option value="La Libertad Norte">La Libertad Norte</option>
+        <option value="La Libertad Oeste">La Libertad Oeste</option>
+        <option value="La Libertad Sur">La Libertad Sur</option>
+        <option value="Ahuachapán Centro">Ahuachapán Centro</option>
+        <option value="Ahuachapán Norte">Ahuachapán Norte</option>
+        <option value="Ahuachapán Sur">Ahuachapán Sur</option>
+      </select>
+    </div>
+
+    <!-- Departamentos -->
+    <div class="layer-group">
+      <label><input type="checkbox" id="toggleDepartamento" > Departamentos</label>
+      <select id="departamentoSelect">
         <option value="">-- Mostrar Todos --</option>
         <option value="Ahuachapán">Ahuachapán</option>
         <option value="Santa Ana">Santa Ana</option>
@@ -51,59 +226,46 @@
       </select>
     </div>
 
-    <!-- CARRETERAS -->
-    <div class="layer-group">
-      <label><input type="checkbox" id="toggleCarreteras" checked> Carreteras</label>
-    </div>
 
-    <!-- Rios -->
-    <div class="layer-group">
-      <label><input type="checkbox" id="toggleRios" checked> Ríos y vías de agua</label>
-    </div>
+
+
+
     <div id="subtitulo">
       <h2>Capas Ráster</h2>
     </div>
     <!-- Temperatura -->
     <div class="layer-group">
-      <label><input type="checkbox" id="toggleTemperatura" checked> Temperatura</label>
+      <label><input type="checkbox" id="toggleTemperatura" > Temperatura</label>
     </div>
 
     <!-- Vegetacion -->
     <div class="layer-group">
-      <label><input type="checkbox" id="toggleVegetacion" checked> Vegetacion</label>
-    </div>
-
-    <!-- Superficie -->
-    <div class="layer-group">
-      <label><input type="checkbox" id="toggleSuperficie" checked> Superficie</label>
+      <label><input type="checkbox" id="toggleVegetacion" > Vegetación</label>
     </div>
 
     <!-- Suelos -->
     <div class="layer-group">
-      <label><input type="checkbox" id="toggleSuelos" checked> Suelos</label>
+      <label><input type="checkbox" id="toggleSuelos" > Suelos</label>
     </div>
+    <!-- Superficie -->
+    <div class="layer-group">
+      <label><input type="checkbox" id="toggleSuperficie" > Superficie</label>
+    </div>
+
   </div>
 
+  <!-- Mapa -->
   <div id="map-container">
     <div id="map"></div>
   </div>
+
+  <!-- Panel de leyenda dinámico -->
   <div id="legend-panel">
     <h2>Leyenda</h2>
-    <div>
-      <h3>Degurba</h3>
-      <img
-        src="http://localhost:8080/geoserver/SGG/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&LAYER=SGG:deburga"
-        alt="Leyenda DEGURBA" />
-    </div>
-    <div>
-      <h3>Municipios</h3>
-      <img
-        src="http://localhost:8080/geoserver/SGG/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&LAYER=SGG:municipios"
-        alt="Leyenda Municipios" />
-    </div>
-    <!-- Agrega más <img> para otras capas si deseas -->
+    <div id="legend-content"></div>
   </div>
 
+  <!-- Scripts -->
   <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
   <script src="js/script.js"></script>
 </body>

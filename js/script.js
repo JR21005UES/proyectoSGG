@@ -12,7 +12,7 @@ const workspace = 'SGG';
 
 const layers = {
     temperatura: {
-        name: `${workspace}:temperaturagi`,
+        name: `${workspace}:temperatura`,
         layer: null,
         toggleId: 'toggleTemperatura'
     },
@@ -26,9 +26,23 @@ const layers = {
     municipios: {
         name: `${workspace}:municipio`,
         layer: null,
-        filterField: 'adm1_es',
+        filterField: 'adm2_es',
         selectId: 'municipioSelect',
         toggleId: 'toggleMunicipios'
+    },
+    departamento: {
+        name: `${workspace}:departamento`,
+        layer: null,
+        filterField: 'adm1_es',
+        selectId: 'departamentoSelect',
+        toggleId: 'toggleDepartamento'
+    },
+    distrito: {
+        name: `${workspace}:distrito`,
+        layer: null,
+        filterField: 'adm3_es',
+        selectId: 'distritoSelect',
+        toggleId: 'toggleDistrito'
     },
     carreteras: {
         name: `${workspace}:carreteras`,
@@ -54,10 +68,139 @@ const layers = {
         name: `${workspace}:rios`,
         layer: null,
         toggleId: 'toggleRios'
+    }, cuerpos: {
+        name: `${workspace}:cuerposAgua`,
+        layer: null,
+        toggleId: 'toggleCuerpos'
+    }, construcciones: {
+        name: `${workspace}:construcciones`,
+        layer: null,
+        toggleId: 'toggleConstrucciones'
     }
 };
 
-// --- Función general para crear capa WMS ---
+// --- Leyenda dinámica ---
+const legendContent = document.getElementById('legend-content');
+
+// Mapea los checkboxes con la capa WMS para leyenda
+const legendMap = {
+    toggleDeburga: 'SGG:deburga',
+    toggleRios: 'SGG:rios',
+    toggleTemperatura: 'SGG:temperatura',
+    toggleVegetacion: 'SGG:vegetacion',
+    toggleSuelos: 'SGG:suelos'
+};
+
+// Actualiza leyendas activas
+function updateLegend() {
+    legendContent.innerHTML = ''; // Limpia actual
+
+    for (const toggleId in legendMap) {
+        const checkbox = document.getElementById(toggleId);
+        if (checkbox && checkbox.checked) {
+            const layerName = legendMap[toggleId];
+
+            // Crea el contenedor
+            const entry = document.createElement('div');
+            entry.className = 'legend-entry';
+
+            // Crea el título
+            const title = document.createElement('h3');
+            title.textContent = toggleId.replace('toggle', ''); // Ej: 'Deburga'
+            title.style.marginBottom = '5px';
+
+            // Mejora el nombre visualmente
+            title.textContent = title.textContent.charAt(0).toUpperCase() + title.textContent.slice(1);
+
+            // Crea la imagen
+            const img = document.createElement('img');
+            img.src = `http://localhost:8080/geoserver/${workspace}/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&LAYER=${layerName}`;
+            img.alt = `Leyenda ${layerName}`;
+            img.style.maxWidth = '100%';
+            img.style.borderRadius = '4px';
+            img.style.marginBottom = '12px';
+
+            // Agrega al contenedor
+            entry.appendChild(title);
+            entry.appendChild(img);
+            legendContent.appendChild(entry);
+        }
+    }
+}
+
+function manejarActivacionRaster() {
+    const temperatura = document.getElementById('toggleTemperatura');
+    const vegetacion = document.getElementById('toggleVegetacion');
+    const suelos = document.getElementById('toggleSuelos');
+    const superficie = document.getElementById('toggleSuperficie');
+
+    let enProceso = false;
+
+    function actualizarEstado(activado) {
+        if (enProceso) return;
+        enProceso = true;
+
+        // Desactivar otras capas si se activa una
+        if (activado === temperatura && temperatura.checked) {
+            vegetacion.checked = false;
+            suelos.checked = false;
+        } else if (activado === vegetacion && vegetacion.checked) {
+            temperatura.checked = false;
+            suelos.checked = false;
+        } else if (activado === suelos && suelos.checked) {
+            temperatura.checked = false;
+            vegetacion.checked = false;
+        }
+
+        // Activar superficie si alguna principal está activa
+        const algunaActiva = temperatura.checked || vegetacion.checked || suelos.checked;
+        superficie.checked = algunaActiva;
+
+        // Primero remover todas las raster para evitar duplicados
+        ['superficie', 'temperatura', 'vegetacion', 'suelos'].forEach(capa => {
+            if (layers[capa]?.layer) {
+                map.removeLayer(layers[capa].layer);
+            }
+        });
+
+        // Agregar superficie primero
+        if (superficie.checked) {
+            map.addLayer(layers.superficie.layer);
+        }
+
+        // Luego la capa activa principal
+        if (temperatura.checked) {
+            map.addLayer(layers.temperatura.layer);
+        } else if (vegetacion.checked) {
+            map.addLayer(layers.vegetacion.layer);
+        } else if (suelos.checked) {
+            map.addLayer(layers.suelos.layer);
+        }
+
+        updateLegend();
+        enProceso = false;
+    }
+
+    temperatura.addEventListener('change', () => actualizarEstado(temperatura));
+    vegetacion.addEventListener('change', () => actualizarEstado(vegetacion));
+    suelos.addEventListener('change', () => actualizarEstado(suelos));
+}
+
+// --- Manejo de capas ---
+function updateLayerVisibility(checkbox, layerKey) {
+    const layer = layers[layerKey]?.layer;
+    if (!layer) return;
+
+    if (checkbox.checked) {
+        map.addLayer(layer);
+    } else {
+        map.removeLayer(layer);
+    }
+}
+
+
+
+// --- Crear capa WMS ---
 function createWMSLayer(layerName, filter = "INCLUDE") {
     return L.tileLayer.wms(geoServerUrl, {
         layers: layerName,
@@ -74,9 +217,8 @@ function loadLayers() {
         const obj = layers[key];
         const filter = obj.selectId ? "INCLUDE" : undefined;
         obj.layer = createWMSLayer(obj.name, filter);
-        map.addLayer(obj.layer);
 
-        // Asignar funcionalidad al checkbox
+        // No se agrega la capa por defecto, solo se escucha el checkbox
         if (obj.toggleId) {
             const toggle = document.getElementById(obj.toggleId);
             toggle.addEventListener('change', () => {
@@ -85,10 +227,11 @@ function loadLayers() {
                 } else {
                     map.removeLayer(obj.layer);
                 }
+                updateLegend(); // Actualiza leyenda al marcar
             });
         }
 
-        // Asignar funcionalidad a los selectores de filtro
+        // Listener de filtro (si aplica)
         if (obj.selectId) {
             const selector = document.getElementById(obj.selectId);
             selector.addEventListener('change', () => {
@@ -101,7 +244,12 @@ function loadLayers() {
             });
         }
     }
+
+    updateLegend(); // Se ejecuta una vez para limpiar si fuera necesario
 }
+
 
 // --- Ejecutar carga inicial ---
 loadLayers();
+manejarActivacionRaster(); // ← Aquí
+
