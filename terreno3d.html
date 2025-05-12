@@ -69,6 +69,8 @@
                     roll: 0.0
                 }
             });
+            viewer.scene.screenSpaceCameraController.minimumZoomDistance = 5000;
+            viewer.scene.screenSpaceCameraController.maximumZoomDistance = 90000;
         }
 
         iniciarCesium();
