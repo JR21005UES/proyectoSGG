@@ -9,7 +9,7 @@ map.createPane('pane_08_lst');            map.getPane('pane_08_lst').style.zInde
 map.createPane('pane_07_departamentos');  map.getPane('pane_07_departamentos').style.zIndex = 400;
 map.createPane('pane_06_municipios');     map.getPane('pane_06_municipios').style.zIndex = 410;
 map.createPane('pane_05_distritos');      map.getPane('pane_05_distritos').style.zIndex = 420;
-map.createPane('pane_cuerposAgua');       map.getPane('pane_cuerposAgua').style.zIndex = 425; // Ejemplo para Cuerpos de Agua
+map.createPane('pane_cuerposAgua');       map.getPane('pane_cuerposAgua').style.zIndex = 425;
 map.createPane('pane_04_deburga');        map.getPane('pane_04_deburga').style.zIndex = 430;
 map.createPane('pane_03_construcciones'); map.getPane('pane_03_construcciones').style.zIndex = 440;
 map.createPane('pane_02_rios');           map.getPane('pane_02_rios').style.zIndex = 450;
@@ -22,56 +22,13 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 const geoServerUrl = 'http://localhost:8080/geoserver/ows';
 const workspace = 'SGG';
 
-// Estructura de datos obtenida del CSV "Poblacion.csv"
 const divisionesAdministrativas = {
-    "Ahuachapán": {
-        municipios: {
-            "Ahuachapán Centro": ["Ahuachapán", "Apaneca", "Concepción de Ataco", "Tacuba"],
-            "Ahuachapán Norte": ["Atiquizaya", "El Refugio", "San Lorenzo", "Turín"],
-            "Ahuachapán Sur": ["Guaymango", "Jujutla", "San Francisco Menéndez", "San Pedro Puxtla"]
-        }
-    },
-    "Santa Ana": {
-        municipios: {
-            "Santa Ana Centro": ["Santa Ana"],
-            "Santa Ana Este": ["Coatepeque", "El Congo"],
-            "Santa Ana Norte": ["Masahuat", "Metapán", "Santa Rosa Guachipilín", "Texistepeque"],
-            "Santa Ana Oeste": ["Candelaria de la Frontera", "Chalchuapa", "El Porvenir", "San Antonio Pajonal", "San Sebastián Salitrillo", "Santiago de la Frontera"]
-        }
-    },
-    "La Libertad": {
-        municipios: {
-            "La Libertad Centro": ["Ciudad Arce", "San Juan Opico"],
-            "La Libertad Costa": ["Chiltiupán", "Jicalapa", "La Libertad", "Tamanique", "Teotepeque"],
-            "La Libertad Este": ["Antiguo Cuscatlán", "Huizúcar", "Nuevo Cuscatlán", "San José Villanueva", "Zaragoza"],
-            "La Libertad Norte": ["Quezaltepeque", "San Matías", "San Pablo Tacachico"],
-            "La Libertad Oeste": ["Colón", "Jayaque", "Sacacoyo", "Talnique", "Tepecoyo"],
-            "La Libertad Sur": ["Comasagua", "Santa Tecla"]
-        }
-    },
-    "San Salvador": {
-        municipios: {
-            "San Salvador Centro": ["Ayutuxtepeque", "Delgado", "Cuscatancingo", "Mejicanos", "San Salvador"],
-            "San Salvador Este": ["Ilopango", "San Martín", "Soyapango", "Tonacatepeque"],
-            "San Salvador Norte": ["Aguilares", "El Paisnal", "Guazapa"],
-            "San Salvador Oeste": ["Apopa", "Nejapa"],
-            "San Salvador Sur": ["Panchimalco", "Rosario de Mora", "San Marcos", "Santiago Texacuangos", "Santo Tomás"]
-        }
-    },
-    "Usulután": {
-        municipios: {
-            "Usulután Este": ["California", "Concepción Batres", "Ereguayquín", "Jucuarán", "Ozatlán", "San Dionisio", "Santa Elena", "Santa María", "Tecapán", "Usulután"],
-            "Usulután Norte": ["Alegría", "Berlín", "El Triunfo", "Estanzuelas", "Jucuapa", "Mercedes Umaña", "Nueva Granada", "San Buenaventura", "Santiago de María"],
-            "Usulután Oeste": ["Jiquilisco", "Puerto El Triunfo", "San Agustín", "San Francisco Javier"]
-        }
-    },
-    "San Miguel": {
-        municipios: {
-            "San Miguel Centro": ["Chirilagua", "Comacarán", "Moncagua", "Quelepa", "San Miguel", "Uluazapa"],
-            "San Miguel Norte": ["Carolina", "Chapeltique", "Ciudad Barrios", "Nuevo Edén de San Juan", "San Antonio", "San Gerardo", "San Luis de la Reina", "Sesori"],
-            "San Miguel Oeste": ["Chinameca", "El Tránsito", "Lolotique", "Nueva Guadalupe", "San Jorge", "San Rafael"]
-        }
-    }
+    "Ahuachapán": { municipios: { "Ahuachapán Centro": ["Ahuachapán", "Apaneca", "Concepción de Ataco", "Tacuba"], "Ahuachapán Norte": ["Atiquizaya", "El Refugio", "San Lorenzo", "Turín"], "Ahuachapán Sur": ["Guaymango", "Jujutla", "San Francisco Menéndez", "San Pedro Puxtla"]}},
+    "Santa Ana": { municipios: { "Santa Ana Centro": ["Santa Ana"], "Santa Ana Este": ["Coatepeque", "El Congo"], "Santa Ana Norte": ["Masahuat", "Metapán", "Santa Rosa Guachipilín", "Texistepeque"], "Santa Ana Oeste": ["Candelaria de la Frontera", "Chalchuapa", "El Porvenir", "San Antonio Pajonal", "San Sebastián Salitrillo", "Santiago de la Frontera"]}},
+    "La Libertad": { municipios: { "La Libertad Centro": ["Ciudad Arce", "San Juan Opico"], "La Libertad Costa": ["Chiltiupán", "Jicalapa", "La Libertad", "Tamanique", "Teotepeque"], "La Libertad Este": ["Antiguo Cuscatlán", "Huizúcar", "Nuevo Cuscatlán", "San José Villanueva", "Zaragoza"], "La Libertad Norte": ["Quezaltepeque", "San Matías", "San Pablo Tacachico"], "La Libertad Oeste": ["Colón", "Jayaque", "Sacacoyo", "Talnique", "Tepecoyo"], "La Libertad Sur": ["Comasagua", "Santa Tecla"]}},
+    "San Salvador": { municipios: { "San Salvador Centro": ["Ayutuxtepeque", "Delgado", "Cuscatancingo", "Mejicanos", "San Salvador"], "San Salvador Este": ["Ilopango", "San Martín", "Soyapango", "Tonacatepeque"], "San Salvador Norte": ["Aguilares", "El Paisnal", "Guazapa"], "San Salvador Oeste": ["Apopa", "Nejapa"], "San Salvador Sur": ["Panchimalco", "Rosario de Mora", "San Marcos", "Santiago Texacuangos", "Santo Tomás"]}},
+    "Usulután": { municipios: { "Usulután Este": ["California", "Concepción Batres", "Ereguayquín", "Jucuarán", "Ozatlán", "San Dionisio", "Santa Elena", "Santa María", "Tecapán", "Usulután"], "Usulután Norte": ["Alegría", "Berlín", "El Triunfo", "Estanzuelas", "Jucuapa", "Mercedes Umaña", "Nueva Granada", "San Buenaventura", "Santiago de María"], "Usulután Oeste": ["Jiquilisco", "Puerto El Triunfo", "San Agustín", "San Francisco Javier"]}},
+    "San Miguel": { municipios: { "San Miguel Centro": ["Chirilagua", "Comacarán", "Moncagua", "Quelepa", "San Miguel", "Uluazapa"], "San Miguel Norte": ["Carolina", "Chapeltique", "Ciudad Barrios", "Nuevo Edén de San Juan", "San Antonio", "San Gerardo", "San Luis de la Reina", "Sesori"], "San Miguel Oeste": ["Chinameca", "El Tránsito", "Lolotique", "Nueva Guadalupe", "San Jorge", "San Rafael"]}}
 };
 
 const layers = {
@@ -79,11 +36,11 @@ const layers = {
     suelos: { name: `${workspace}:suelos`, layer: null, toggleId: 'toggleSuelos', paneName: 'pane_10_usoSuelo' },
     vegetacion: { name: `${workspace}:vegetacion`, layer: null, toggleId: 'toggleVegetacion', paneName: 'pane_09_ndvi' },
     temperatura: { name: `${workspace}:temperatura`, layer: null, toggleId: 'toggleTemperatura', paneName: 'pane_08_lst' },
-    departamento: { name: `${workspace}:departamento`, layer: null, filterField: 'adm1_es', toggleId: 'toggleDepartamento', paneName: 'pane_07_departamentos' }, // selectId removido
-    municipios: { name: `${workspace}:municipio`, layer: null, filterField: 'adm2_es', toggleId: 'toggleMunicipios', paneName: 'pane_06_municipios' }, // selectId removido
-    distrito: { name: `${workspace}:distrito`, layer: null, filterField: 'adm3_es', toggleId: 'toggleDistrito', paneName: 'pane_05_distritos' }, // selectId removido
+    departamento: { name: `${workspace}:departamento`, layer: null, filterField: 'adm1_es', toggleId: 'toggleDepartamento', paneName: 'pane_07_departamentos' },
+    municipios: { name: `${workspace}:municipio`, layer: null, filterField: 'adm2_es', toggleId: 'toggleMunicipios', paneName: 'pane_06_municipios' },
+    distrito: { name: `${workspace}:distrito`, layer: null, filterField: 'adm3_es', toggleId: 'toggleDistrito', paneName: 'pane_05_distritos' },
     cuerposAgua: { name: `${workspace}:cuerposAgua`, layer: null, toggleId: 'toggleCuerpos', paneName: 'pane_cuerposAgua' },
-    deburga: { name: `${workspace}:deburga`, layer: null, filterField: 'class', toggleId: 'toggleDeburga', paneName: 'pane_04_deburga' }, // selectId global
+    deburga: { name: `${workspace}:deburga`, layer: null, filterField: 'class', toggleId: 'toggleDeburga', paneName: 'pane_04_deburga' },
     construcciones: { name: `${workspace}:construcciones`, layer: null, toggleId: 'toggleConstrucciones', paneName: 'pane_03_construcciones' },
     rios: { name: `${workspace}:rios`, layer: null, toggleId: 'toggleRios', paneName: 'pane_02_rios' },
     carreteras: { name: `${workspace}:carreteras`, layer: null, toggleId: 'toggleCarreteras', paneName: 'pane_01_carreteras' }
@@ -101,20 +58,18 @@ const distritoSelectGlobal = document.getElementById('distritoSelectGlobal');
 const deburgaSelectGlobal = document.getElementById('deburgaSelectGlobal');
 const resetFiltersButton = document.getElementById('resetFiltersButton');
 
-function updateLegend() { /* ... (Sin cambios desde la última versión completa) ... */ }
-function manejarActivacionRaster() { /* ... (Sin cambios desde la última versión completa) ... */ }
-function createWMSLayer(layerName, layerPane, filter = "INCLUDE") { /* ... (Sin cambios desde la última versión completa) ... */ }
-
-
-// --- COMIENZO DE FUNCIONES DE FILTRADO EN CASCADA Y LÓGICA ASOCIADA ---
+/**
+ * Puebla el selector de municipios basado en el departamento seleccionado.
+ * Limpia y deshabilita el selector de distritos.
+ * Habilita el selector de municipios si se encuentran municipios para el departamento.
+ * @param {string} departamentoNombre - El nombre del departamento seleccionado.
+ */
 function populateMunicipioSelect(departamentoNombre) {
-    municipioSelectGlobal.innerHTML = '<option value="">-- Seleccione Municipio --</option>';
-    // Limpiar también distritos al cambiar departamento
-    distritoSelectGlobal.innerHTML = '<option value="">-- Seleccione Distrito --</option>';
+    municipioSelectGlobal.innerHTML = '<option value="">-- Seleccione --</option>';
+    distritoSelectGlobal.innerHTML = '<option value="">-- Seleccione --</option>';
     distritoSelectGlobal.disabled = true;
     distritoSelectGlobal.classList.add('bg-gray-100', 'cursor-not-allowed', 'opacity-70');
     distritoSelectGlobal.classList.remove('bg-white');
-
 
     if (departamentoNombre && divisionesAdministrativas[departamentoNombre]) {
         const dataDepartamento = divisionesAdministrativas[departamentoNombre];
@@ -128,7 +83,6 @@ function populateMunicipioSelect(departamentoNombre) {
             municipioSelectGlobal.disabled = false;
             municipioSelectGlobal.classList.remove('bg-gray-100', 'cursor-not-allowed', 'opacity-70');
             municipioSelectGlobal.classList.add('bg-white');
-
         } else {
              municipioSelectGlobal.disabled = true;
              municipioSelectGlobal.classList.add('bg-gray-100', 'cursor-not-allowed', 'opacity-70');
@@ -141,8 +95,14 @@ function populateMunicipioSelect(departamentoNombre) {
     }
 }
 
+/**
+ * Puebla el selector de distritos basado en el departamento y municipio seleccionados.
+ * Habilita el selector de distritos si se encuentran distritos.
+ * @param {string} departamentoNombre - El nombre del departamento seleccionado.
+ * @param {string} municipioNombre - El nombre del municipio seleccionado.
+ */
 function populateDistritoSelect(departamentoNombre, municipioNombre) {
-    distritoSelectGlobal.innerHTML = '<option value="">-- Seleccione Distrito --</option>';
+    distritoSelectGlobal.innerHTML = '<option value="">-- Seleccione --</option>';
     if (departamentoNombre && municipioNombre &&
         divisionesAdministrativas[departamentoNombre] &&
         divisionesAdministrativas[departamentoNombre].municipios &&
@@ -165,22 +125,25 @@ function populateDistritoSelect(departamentoNombre, municipioNombre) {
     }
 }
 
+/**
+ * Aplica los filtros CQL a las capas de Departamento, Municipio y Distrito
+ * basándose en las selecciones actuales de los selectores globales.
+ * Esta función NO maneja el zoom ni el recorte de rásters.
+ */
 function applyGlobalFilters() {
     const depSelected = departamentoSelectGlobal.value;
     const munSelected = municipioSelectGlobal.value;
     const disSelected = distritoSelectGlobal.value;
 
-    // Capa Departamento: solo se filtra por sí misma (adm1_es)
     let cqlFilterDepartamento = depSelected ? `adm1_es = '${depSelected}'` : "INCLUDE";
     if (layers.departamento.layer) {
         layers.departamento.layer.setParams({ CQL_FILTER: cqlFilterDepartamento, _refresh: Date.now() });
     }
 
-    // Capa Municipios: se filtra por adm1_es (departamento) Y por adm2_es (municipio) si está seleccionado
     let cqlFilterMunicipio = "INCLUDE";
     if (depSelected) {
         cqlFilterMunicipio = `adm1_es = '${depSelected}'`;
-        if (munSelected) { // Aplicar filtro de municipio SOLO si un departamento está seleccionado
+        if (munSelected) {
             cqlFilterMunicipio += ` AND adm2_es = '${munSelected}'`;
         }
     }
@@ -188,18 +151,17 @@ function applyGlobalFilters() {
         layers.municipios.layer.setParams({ CQL_FILTER: cqlFilterMunicipio, _refresh: Date.now() });
     }
 
-    // Capa Distritos: se filtra por adm1_es, adm2_es Y por adm3_es si está seleccionado
     let cqlFilterDistrito = "INCLUDE";
     if (depSelected) {
         cqlFilterDistrito = `adm1_es = '${depSelected}'`;
-        if (munSelected) { // Aplicar filtro de municipio SOLO si un departamento está seleccionado
+        if (munSelected) {
              cqlFilterDistrito += ` AND adm2_es = '${munSelected}'`;
-            if (disSelected) { // Aplicar filtro de distrito SOLO si un municipio está seleccionado
+            if (disSelected) {
                 cqlFilterDistrito += ` AND adm3_es = '${disSelected}'`;
             }
         }
     }
-     if (layers.distrito.layer) {
+    if (layers.distrito.layer) {
         layers.distrito.layer.setParams({ CQL_FILTER: cqlFilterDistrito, _refresh: Date.now() });
     }
 }
@@ -224,7 +186,7 @@ if (distritoSelectGlobal) {
     });
 }
 
-if (deburgaSelectGlobal && layers.deburga) { // Asegurarse que layers.deburga exista
+if (deburgaSelectGlobal && layers.deburga) {
     deburgaSelectGlobal.addEventListener('change', function() {
         const value = this.value;
         const filter = value ? `${layers.deburga.filterField} = '${value}'` : 'INCLUDE';
@@ -237,12 +199,12 @@ if (deburgaSelectGlobal && layers.deburga) { // Asegurarse que layers.deburga ex
 if (resetFiltersButton) {
     resetFiltersButton.addEventListener('click', function() {
         departamentoSelectGlobal.value = "";
-        municipioSelectGlobal.innerHTML = '<option value="">-- Seleccione Municipio --</option>';
+        municipioSelectGlobal.innerHTML = '<option value="">-- Seleccione --</option>';
         municipioSelectGlobal.disabled = true;
         municipioSelectGlobal.classList.add('bg-gray-100', 'cursor-not-allowed', 'opacity-70');
         municipioSelectGlobal.classList.remove('bg-white');
 
-        distritoSelectGlobal.innerHTML = '<option value="">-- Seleccione Distrito --</option>';
+        distritoSelectGlobal.innerHTML = '<option value="">-- Seleccione --</option>';
         distritoSelectGlobal.disabled = true;
         distritoSelectGlobal.classList.add('bg-gray-100', 'cursor-not-allowed', 'opacity-70');
         distritoSelectGlobal.classList.remove('bg-white');
@@ -254,10 +216,15 @@ if (resetFiltersButton) {
                 layers[key].layer.setParams({ CQL_FILTER: 'INCLUDE', _refresh: Date.now() });
             }
         });
-        map.setView([13.6929, -89.2182], 9); // Resetear zoom
+        map.setView([13.6929, -89.2182], 9);
     });
 }
 
+/**
+ * Inicializa todas las capas definidas en el objeto 'layers'.
+ * Crea las instancias de Leaflet WMS y configura los listeners para
+ * los checkboxes de visibilidad de cada capa.
+ */
 function loadLayers() {
     for (const key in layers) {
         const obj = layers[key];
@@ -273,32 +240,30 @@ function loadLayers() {
             if (toggle) {
                 const isSpecialRaster = ['temperatura', 'vegetacion', 'suelos'].includes(key);
                 const isSuperficie = key === 'superficie';
-                // Las capas administrativas y deburga se manejan por los filtros globales en términos de CQL_FILTER
-                // Sus toggles solo afectan la visibilidad y la leyenda
                 toggle.addEventListener('change', () => {
                     if (toggle.checked) {
                         if (obj.layer && !map.hasLayer(obj.layer)) map.addLayer(obj.layer);
                     } else {
                         if (obj.layer && map.hasLayer(obj.layer)) map.removeLayer(obj.layer);
                     }
-                    // Solo actualizar leyenda si la capa está en legendMap
                     if (legendMap[obj.toggleId] || (isSpecialRaster || isSuperficie)) {
                          updateLegend();
                     }
                 });
             } else {
-                // console.warn(`Toggle ID '${obj.toggleId}' no encontrado para la capa '${key}'`);
+                console.warn(`Toggle ID '${obj.toggleId}' no encontrado para la capa '${key}'`);
             }
         }
     }
     applyGlobalFilters(); 
     updateLegend(); 
 }
-// --- FIN DE FUNCIONES DE FILTRADO EN CASCADA ---
 
-
-// --- PEGAR AQUÍ LAS FUNCIONES SIN CAMBIOS (updateLegend, manejarActivacionRaster, createWMSLayer) ---
-// (Asegúrate de que updateLegend, manejarActivacionRaster, createWMSLayer son las versiones completas y correctas de respuestas anteriores)
+/**
+ * Actualiza dinámicamente el contenido del panel de leyenda.
+ * Muestra la leyenda gráfica de GeoServer para cada capa visible que esté en 'legendMap'.
+ * Oculta el panel de leyenda si no hay leyendas activas.
+ */
 function updateLegend() {
     if (!legendContent) {
         console.error("Elemento #legend-content no encontrado.");
@@ -313,12 +278,26 @@ function updateLegend() {
             const layerName = legendMap[toggleId];
             const entry = document.createElement('div');
             const title = document.createElement('h3');
-            let titleText = toggleId.replace('toggle', '');
-            titleText = titleText.charAt(0).toUpperCase() + titleText.slice(1).replace(/([A-Z])/g, ' $1').trim();
+            let titleText = "";
+            const labelElement = document.querySelector(`label[for='${toggleId}']`) || checkbox.closest('label');
+            if (labelElement) {
+                const clonedLabel = labelElement.cloneNode(true);
+                const inputInCloned = clonedLabel.querySelector('input');
+                if (inputInCloned) clonedLabel.removeChild(inputInCloned);
+                titleText = clonedLabel.textContent.trim();
+            }
+            if (!titleText) {
+                 titleText = toggleId.replace('toggle', '');
+                 titleText = titleText.charAt(0).toUpperCase() + titleText.slice(1).replace(/([A-Z])/g, ' $1').trim();
+            }
+
             title.textContent = titleText;
             title.className = 'text-sm font-semibold text-gray-100 mb-1';
+            
             const img = document.createElement('img');
-            const legendUrl = `${geoServerUrl.replace('/ows', '')}/${workspace}/wms?REQUEST=GetLegendGraphic&VERSION=1.1.0&FORMAT=image/png&LAYER=${layerName}&STYLE=`;
+            const legendWmsUrl = geoServerUrl.endsWith('/ows') ? geoServerUrl.replace('/ows', '/wms') : (geoServerUrl.includes('/wms') ? geoServerUrl : `${geoServerUrl}/${workspace}/wms`);
+            const legendUrl = `${legendWmsUrl}?REQUEST=GetLegendGraphic&VERSION=1.1.0&FORMAT=image/png&LAYER=${layerName}&STYLE=`;
+            
             img.src = legendUrl;
             img.alt = `Leyenda ${layerName}`;
             img.className = 'max-w-full rounded bg-white p-1 border border-gray-400 shadow-sm';
@@ -342,6 +321,12 @@ function updateLegend() {
     }
 }
 
+/**
+ * Gestiona la lógica de visualización de las capas ráster.
+ * Permite que solo una capa ráster temática (temperatura, vegetación, suelos) esté activa a la vez.
+ * Activa automáticamente la capa 'superficie' si alguna de las temáticas está activa.
+ * Aplica filtros globales (zoom) cuando cambia el estado de los rásters.
+ */
 function manejarActivacionRaster() {
     const temperatura = document.getElementById('toggleTemperatura');
     const vegetacion = document.getElementById('toggleVegetacion');
@@ -351,7 +336,7 @@ function manejarActivacionRaster() {
 
     let enProceso = false;
 
-    function actualizarEstadoRaster(activadoCheckbox) {
+    async function actualizarEstadoRaster(activadoCheckbox) {
         if (enProceso || !activadoCheckbox) return;
         enProceso = true;
 
@@ -398,11 +383,11 @@ function manejarActivacionRaster() {
     }
 
     rasterTematicosCheckboxes.forEach(chk => {
-        chk.addEventListener('change', () => actualizarEstadoRaster(chk));
+        if (chk) chk.addEventListener('change', () => actualizarEstadoRaster(chk));
     });
 
     if(superficie) {
-        superficie.addEventListener('change', () => {
+        superficie.addEventListener('change', async () => { 
             if (superficie.checked) {
                 if (layers.superficie.layer && !map.hasLayer(layers.superficie.layer)) {
                     map.addLayer(layers.superficie.layer);
@@ -411,7 +396,7 @@ function manejarActivacionRaster() {
                 const algunaTematicaActiva = rasterTematicosCheckboxes.some(chk => chk.checked);
                 if (algunaTematicaActiva) { 
                     superficie.checked = true; 
-                     if (layers.superficie.layer && !map.hasLayer(layers.superficie.layer)) { //Asegurar que se añada si se re-marca
+                     if (layers.superficie.layer && !map.hasLayer(layers.superficie.layer)) {
                         map.addLayer(layers.superficie.layer);
                     }
                 } else {
@@ -425,6 +410,13 @@ function manejarActivacionRaster() {
     }
 }
 
+/**
+ * Crea y devuelve un objeto de capa L.tileLayer.wms de Leaflet.
+ * @param {string} layerName - El nombre completo de la capa en GeoServer.
+ * @param {string} layerPane - El nombre del panel de Leaflet donde se dibujará esta capa.
+ * @param {string} [filter="INCLUDE"] - Un filtro CQL opcional a aplicar a la capa.
+ * @returns {L.TileLayer.WMS} Objeto de capa WMS de Leaflet.
+ */
 function createWMSLayer(layerName, layerPane, filter = "INCLUDE") {
     return L.tileLayer.wms(geoServerUrl, {
         layers: layerName,
@@ -435,10 +427,7 @@ function createWMSLayer(layerName, layerPane, filter = "INCLUDE") {
         pane: layerPane
     });
 }
-// --- FIN DE FUNCIONES SIN CAMBIOS ---
-
 
 // --- Ejecutar carga inicial ---
-loadLayers(); // Carga capas y configura listeners de visibilidad básicos
-manejarActivacionRaster(); // Configura listeners para lógica de capas raster
-// Los listeners para los filtros globales ya están configurados arriba.
+loadLayers(); 
+manejarActivacionRaster();
