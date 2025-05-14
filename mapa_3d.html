@@ -1,26 +1,250 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
-    <title>Prueba Básica de CesiumJS</title>
+    <meta charset="UTF-8">
+    <title>Visor 3D GeoServer con CesiumJS</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
 
-    <script src="https://cesium.com/downloads/cesiumjs/releases/1.117/Build/Cesium/Cesium.js"></script>
-    <link href="https://cesium.com/downloads/cesiumjs/releases/1.117/Build/Cesium/Widgets/widgets.css" rel="stylesheet">
+    <script src="https://cesium.com/downloads/cesiumjs/releases/1.118/Build/Cesium/Cesium.js"></script>
+    <link href="https://cesium.com/downloads/cesiumjs/releases/1.118/Build/Cesium/Widgets/widgets.css" rel="stylesheet">
+
+    <script src="https://cdn.tailwindcss.com"></script>
 
     <style>
-        html, body, #cesiumContainer {
-            width: 100%;
+        /* Estilos básicos para Cesium y tu UI */
+        html, body {
             height: 100%;
             margin: 0;
             padding: 0;
-            overflow: hidden;
+            overflow: hidden; /* Evitar scrollbars en el body */
+            font-family: sans-serif; /* Coherencia con Tailwind */
         }
+
+        /* Contenedor principal de la aplicación flex */
+        .app-container {
+            display: flex;
+            height: 100vh; /* Ocupar toda la altura de la ventana */
+            padding: 1.25rem; /* p-5 de Tailwind */
+            background-color: #eaf3fb; /* bg-[#eaf3fb] de Tailwind */
+        }
+
+        /* Sidebar (topbar) */
+        #topbar {
+            width: 15rem; /* w-60 */
+            background-color: #2c3e50; /* bg-[#2c3e50] */
+            color: white;
+            padding: 1.25rem; /* p-5 */
+            border-radius: 0.5rem; /* rounded-lg */
+            display: flex;
+            flex-direction: column;
+            height: calc(100vh - 2.5rem); /* h-[calc(100vh-2.5rem)] */
+            z-index: 100; /* Para estar sobre Cesium */
+        }
+
+        /* Contenedor del mapa y elementos flotantes */
+        .map-area {
+            flex: 1;
+            margin-left: 1.25rem; /* ml-5 */
+            position: relative; /* Para posicionar elementos absolutos dentro */
+            height: calc(100vh - 2.5rem); /* Ajustar altura */
+        }
+
+        #cesiumContainer {
+            width: 100%;
+            height: 100%;
+            border: 2px solid #d1d5db; /* border-2 border-gray-300 */
+            border-radius: 0.5rem; /* rounded-lg */
+            overflow: hidden;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06); /* shadow-md */
+            background-color: white;
+        }
+
+        /* Barra de filtros */
+        #filter-bar {
+            position: absolute;
+            top: 0.75rem; /* top-3 */
+            left: 0.75rem; /* left-3 */
+            /* right: calc(180px + 1rem + 0.75rem); /* Ajustado para dejar espacio a la leyenda y un poco más */
+            /* Dejaremos que el right se ajuste o lo controlamos con max-width si es necesario */
+            background-color: #2c3e50; /* bg-[#2c3e50] */
+            color: white;
+            padding: 0.75rem; /* p-3 */
+            border-radius: 0.5rem; /* rounded-lg */
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 0.5rem; /* Reemplaza space-x-2 y space-y-2 */
+            z-index: 90; /* Sobre Cesium pero debajo de los widgets de Cesium */
+        }
+         #filter-bar select { background-color: white; color: #374151; border-color: #9ca3af; }
+         #filter-bar select:disabled { background-color: #4b5563; color: #d1d5db; opacity: 0.7; cursor: not-allowed; border-color: #6b7280;}
+
+
+        /* Panel de Leyenda - Ajustado para no cubrir los botones de Cesium */
+        #legend-panel {
+            position: absolute;
+            top: 0.75rem; /* top-3 */
+            right: 0.75rem; /* right-3 */
+            width: 200px; /* w-[180px] o un poco más si es necesario */
+            background-color: #2c3e50; /* bg-[#2c3e50] */
+            color: white;
+            padding: 0.75rem; /* p-3 */
+            border-radius: 0.5rem; /* rounded-lg */
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06); /* shadow-md */
+            z-index: 90; /* Sobre Cesium */
+            /* Ajustamos la altura máxima para que no cubra los controles inferiores de Cesium si los hubiera */
+            max-height: calc(100% - 50px); /* Deja espacio abajo */
+        }
+        #legend-content {
+            max-height: calc(100vh - 12rem - 50px); /* Ajuste de tu estilo original menos el espacio de los controles de Cesium */
+        }
+
+
+        /* Scrollbar personalizado (como lo tenías) */
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: #2c3e50; border-radius: 3px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background-color: #5b7a9d; border-radius: 3px; border: 1px solid #2c3e50; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background-color: #7492b3; }
+        .custom-scrollbar { scrollbar-width: thin; scrollbar-color: #5b7a9d #2c3e50; }
+
+        /* Para asegurar que los widgets de Cesium estén encima de nuestra UI personalizada si es necesario */
+        .cesium-viewer-toolbar {
+            z-index: 101 !important;
+        }
+        .cesium-viewer-animationContainer, .cesium-viewer-timelineContainer {
+            z-index: 101 !important;
+        }
+
     </style>
 </head>
-<body>
-    <div id="cesiumContainer"></div>
-    <script src="./js/cesium.js"></script>
+<body class="app-container">
+
+    <div id="topbar">
+        <div id="logo-container" class="flex justify-center mb-3">
+            <img src="https://www.ues.edu.sv/wp-content/uploads/sites/20/2024/08/light-header-v2.png" alt="Logo UES"
+                id="logo-ues" class="w-full h-auto max-h-16 object-contain">
+        </div>
+        <div id="titulo" class="mb-3 text-center">
+            <h2 class="text-xl font-bold">SIG 3D (Cesium)</h2>
+        </div>
+        <div class="flex-grow overflow-y-auto space-y-1 pr-1 custom-scrollbar">
+            <div id="subtitulo-vectorial">
+                <h2 class="text-base font-semibold mb-1 text-gray-200 sticky top-0 bg-[#2c3e50] py-1 z-10">Capas Visibles</h2>
+            </div>
+            <div class="layer-group">
+                <label class="flex items-center font-semibold text-sm cursor-pointer hover:bg-gray-700/50 p-1 rounded">
+                    <input type="checkbox" id="toggleCarreteras" class="form-checkbox mr-2 text-blue-500 bg-gray-700 border-gray-600 rounded focus:ring-blue-500"> Carreteras
+                </label>
+            </div>
+            <div class="layer-group">
+                <label class="flex items-center font-semibold text-sm cursor-pointer hover:bg-gray-700/50 p-1 rounded">
+                    <input type="checkbox" id="toggleRios" class="form-checkbox mr-2 text-blue-500 bg-gray-700 border-gray-600 rounded focus:ring-blue-500"> Ríos y vías de agua
+                </label>
+            </div>
+            <div class="layer-group">
+                <label class="flex items-center font-semibold text-sm cursor-pointer hover:bg-gray-700/50 p-1 rounded">
+                    <input type="checkbox" id="toggleConstrucciones" class="form-checkbox mr-2 text-blue-500 bg-gray-700 border-gray-600 rounded focus:ring-blue-500"> Construcciones
+                </label>
+            </div>
+            <div class="layer-group">
+                <label class="flex items-center font-semibold text-sm cursor-pointer hover:bg-gray-700/50 p-1 rounded">
+                    <input type="checkbox" id="toggleDeburga" class="form-checkbox mr-2 text-blue-500 bg-gray-700 border-gray-600 rounded focus:ring-blue-500"> DEGURBA
+                </label>
+            </div>
+            <div class="layer-group">
+                <label class="flex items-center font-semibold text-sm cursor-pointer hover:bg-gray-700/50 p-1 rounded">
+                    <input type="checkbox" id="toggleCuerpos" class="form-checkbox mr-2 text-blue-500 bg-gray-700 border-gray-600 rounded focus:ring-blue-500"> Cuerpos de agua
+                </label>
+            </div>
+            <div class="layer-group">
+                <label class="flex items-center font-semibold text-sm cursor-pointer hover:bg-gray-700/50 p-1 rounded">
+                    <input type="checkbox" id="toggleDistrito" class="form-checkbox mr-2 text-blue-500 bg-gray-700 border-gray-600 rounded focus:ring-blue-500"> Distritos
+                </label>
+            </div>
+            <div class="layer-group">
+                <label class="flex items-center font-semibold text-sm cursor-pointer hover:bg-gray-700/50 p-1 rounded">
+                    <input type="checkbox" id="toggleMunicipios" class="form-checkbox mr-2 text-blue-500 bg-gray-700 border-gray-600 rounded focus:ring-blue-500"> Municipios
+                </label>
+            </div>
+            <div class="layer-group">
+                <label class="flex items-center font-semibold text-sm cursor-pointer hover:bg-gray-700/50 p-1 rounded">
+                    <input type="checkbox" id="toggleDepartamento" class="form-checkbox mr-2 text-blue-500 bg-gray-700 border-gray-600 rounded focus:ring-blue-500"> Departamentos
+                </label>
+            </div>
+            <hr class="my-2 border-gray-600">
+            <div id="subtitulo-raster" class="mt-2">
+                <h2 class="text-base font-semibold mb-1 text-gray-200 sticky top-0 bg-[#2c3e50] py-1 z-10">Capas Ráster</h2>
+            </div>
+            <div class="layer-group">
+                <label class="flex items-center font-semibold text-sm cursor-pointer hover:bg-gray-700/50 p-1 rounded">
+                    <input type="checkbox" id="toggleTemperatura" class="form-checkbox mr-2 text-blue-500 bg-gray-700 border-gray-600 rounded focus:ring-blue-500"> Temperatura (LST)
+                </label>
+            </div>
+            <div class="layer-group">
+                <label class="flex items-center font-semibold text-sm cursor-pointer hover:bg-gray-700/50 p-1 rounded">
+                    <input type="checkbox" id="toggleVegetacion" class="form-checkbox mr-2 text-blue-500 bg-gray-700 border-gray-600 rounded focus:ring-blue-500"> Vegetación (NDVI)
+                </label>
+            </div>
+            <div class="layer-group">
+                <label class="flex items-center font-semibold text-sm cursor-pointer hover:bg-gray-700/50 p-1 rounded">
+                    <input type="checkbox" id="toggleSuelos" class="form-checkbox mr-2 text-blue-500 bg-gray-700 border-gray-600 rounded focus:ring-blue-500"> Uso de Suelo
+                </label>
+            </div>
+            <div class="layer-group">
+                <label class="flex items-center font-semibold text-sm cursor-pointer hover:bg-gray-700/50 p-1 rounded">
+                    <input type="checkbox" id="toggleSuperficie" class="form-checkbox mr-2 text-blue-500 bg-gray-700 border-gray-600 rounded focus:ring-blue-500"> Superficie
+                </label>
+            </div>
+        </div>
+    </div>
+
+    <div class="map-area">
+        <div id="cesiumContainer"></div>
+
+        <div id="filter-bar">
+            <div class="flex flex-col">
+                <label for="departamentoSelectGlobal" class="text-xs font-semibold text-gray-200 mb-0.5">Departamento:</label>
+                <select id="departamentoSelectGlobal" class="form-select p-1.5 border border-gray-400 rounded-md shadow-sm text-xs text-gray-800 bg-white focus:ring-blue-500 focus:border-blue-500 min-w-[150px]">
+                    <option value="">-- Seleccione --</option>
+                    <option value="Ahuachapán">Ahuachapán</option>
+                    <option value="Santa Ana">Santa Ana</option>
+                    <option value="La Libertad">La Libertad</option>
+                    <option value="San Salvador">San Salvador</option>
+                    <option value="Usulután">Usulután</option>
+                    <option value="San Miguel">San Miguel</option>
+                </select>
+            </div>
+            <div class="flex flex-col">
+                <label for="municipioSelectGlobal" class="text-xs font-semibold text-gray-200 mb-0.5">Municipio:</label>
+                <select id="municipioSelectGlobal" disabled class="form-select p-1.5 border border-gray-400 rounded-md shadow-sm text-xs text-gray-800 bg-gray-100 cursor-not-allowed focus:ring-blue-500 focus:border-blue-500 min-w-[150px]">
+                    <option value="">-- Seleccione --</option>
+                </select>
+            </div>
+            <div class="flex flex-col">
+                <label for="distritoSelectGlobal" class="text-xs font-semibold text-gray-200 mb-0.5">Distrito:</label>
+                <select id="distritoSelectGlobal" disabled class="form-select p-1.5 border border-gray-400 rounded-md shadow-sm text-xs text-gray-800 bg-gray-100 cursor-not-allowed focus:ring-blue-500 focus:border-blue-500 min-w-[150px]">
+                    <option value="">-- Seleccione --</option>
+                </select>
+            </div>
+            <div class="flex flex-col">
+                <label for="deburgaSelectGlobal" class="text-xs font-semibold text-gray-200 mb-0.5">DEGURBA:</label>
+                <select id="deburgaSelectGlobal" class="form-select p-1.5 border border-gray-400 rounded-md shadow-sm text-xs text-gray-800 bg-white focus:ring-blue-500 focus:border-blue-500 min-w-[150px]">
+                    <option value="">-- Todas --</option>
+                    <option value="Ciudades">Ciudades</option>
+                    <option value="Zonas rurales">Zonas rurales</option>
+                    <option value="Zonas rurales dispersas">Zonas rurales dispersas</option>
+                    <option value="Zonas suburbanas o periurbanas">Zonas suburbanas o periurbanas</option>
+                </select>
+            </div>
+            <button id="resetFiltersButton" class="self-end p-1.5 bg-red-500 text-white rounded-md hover:bg-red-600 text-xs h-fit">Limpiar</button>
+        </div>
+
+        <div id="legend-panel" style="display: none;"> <h2 class="text-base font-semibold mb-1.5 pb-1 border-b border-white/40">Leyenda</h2>
+            <div id="legend-content" class="space-y-3 custom-scrollbar overflow-y-auto">
+                </div>
+        </div>
+    </div>
+
+    <script src="js/cesium.js"></script>
 </body>
 </html>
